@@ -1,0 +1,19 @@
+{% load static %}
+<html>
+    <head>
+        <title>LITreview</title>
+        <link rel="stylesheet" href="{% static 'app.css' %}">
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>LITreview</h1>
+            {% if user.is_authenticated %}
+                <p>Salut, {{ user }} !</p>
+                <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
+            {% endif %}
+        </div>
+        <div class="main">
+            {% block content %}{% endblock content %}
+        </div>
+    </body>
+</html>
