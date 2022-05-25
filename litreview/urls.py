@@ -54,3 +54,7 @@ urlpatterns = [
     #      name='create_multiple_photos'),
     # path('follow-users/', blog.views.follow_users, name='follow_users'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,9 +8,13 @@
         <div class="sidebar">
             <h1>LITreview</h1>
             {% if user.is_authenticated %}
-                <p>Salut, {{ user }} !</p>
+                <p>Salut, <strong>{{ request.user }}</strong> !</p>
+                <p><a href="{% url 'logout' %}">Demander une revue</a></p>
+                <p><a href="{% url 'logout' %}">Soumettre soi-même une revue</a></p>
+                <p><a href="{% url 'logout' %}">Soumettre une revue</a></p>
                 <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
             {% endif %}
+
         </div>
         <div class="main">
             {% block content %}{% endblock content %}
