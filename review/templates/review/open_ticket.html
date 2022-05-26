@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post">
+
+<br/>
+<div class="open_ticket">
+    <h2>Ask for a review</h2>
+    <br/>
+    <form method="post" enctype="multipart/form-data">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit" >Submit</button>
     </form>
-    <p>Not yet a member ? <a href="{% url 'signup' %}">Subscribe now !</a></p>
+</div>
 {% endblock content %}
