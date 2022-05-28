@@ -24,14 +24,22 @@ from django.conf.urls.static import static
 import authentication.views
 import review.views
 
+from authentication.forms import LoginForm
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('admin/', authentication.views.fake_admin, name='admin'),
     # path('', authentication.views.login_page, name='login'),
     # path('', authentication.views.LoginPageView.as_view(), name='login'),
+    # path('', LoginView.as_view(
+    #     template_name='authentication/login.html',
+    #     redirect_authenticated_user=True),
+    #      name='login'),
     path('', LoginView.as_view(
         template_name='authentication/login.html',
+        authentication_form=LoginForm,
         redirect_authenticated_user=True),
-         name='login'),
+        name='login'),
     # path('logout/', authentication.views.logout_user, name='logout'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('change-password/', PasswordChangeView.as_view(

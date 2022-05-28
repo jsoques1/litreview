@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Subscription</h2>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Submit</button>
-    </form>
+    <div class="inscription">
+        <h2>Inscription</h2>
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button type="button" class="btn" onclick="window.history.back();">Cancel</button>
+            <button type="submit" class="btn">S’inscrire</button>
+        </form>
+    </div>
 {% endblock content %}

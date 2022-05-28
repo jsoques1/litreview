@@ -8,18 +8,22 @@
         <title>LITreview</title>
     </head>
     <body>
-        <div class="sidebar">
-            <h1>LITreview</h1>
+        <div class="top_bar">
             {% if user.is_authenticated %}
-                <p>Welcome, <strong>{{ request.user }}</strong> !</p>
-                <p><a href="{% url 'open_ticket' %}">Ask for a review</a></p>
-                <p><a href="{% url 'logout' %}">Submit own review</a></p>
-                <p><a href="{% url 'logout' %}">Submit a review</a></p>
-                <p><a href="{% url 'follow_users' %}">Follow a user</a></p>
-                <p><a href="{% url 'logout' %}">Disconnect</a></p>
+                <p><strong>Bienvenue {{ request.user }} !</strong></p>
+                <p class="title"><strong>LitReview</strong></p>
+                <p class="menu"><a href="{% url 'open_ticket' %}">Flux</a></p>
+                <p class="menu"><a href="{% url 'logout' %}">Posts</a></p>
+                <p class="menu"><a href="{% url 'signup' %}">Abonnements</a></p>
+            <!--
+                <p class="menu"><a href="{% url 'follow_users' %}">Follow a user</a></p>
+            -->
+                <p class="menu"><a href="{% url 'logout' %}">Disconnect</a></p>
+            {% else %}
+                <p class="title_centered"><strong>LitReview</strong></p>
             {% endif %}
-
         </div>
+
         <div class="main">
             {% block content %}{% endblock content %}
         </div>

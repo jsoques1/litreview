@@ -1,39 +1,29 @@
+a {
+  color: white !important;
+  text-decoration: none;
+}
+
 html {
     font-family: Arial;
 }
 
-/* The sidebar menu */
-.sidebar {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 220px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #1d3030;
-    color:  #ffffe6;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
+.top_bar {
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  background: rgba(95, 94, 94, 0.933);
+  color: white;
+  align-items: center;
 }
 
-/* The navigation menu links */
-.sidebar a {
+.top_bar a {
     text-decoration: none;
-    color:  #ffffe6;
+    color: #ffffe6;
     display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
+.top_bar a:hover {
     color: #f1f1f1;
-}
-
-/* Style page content */
-.main {
-    margin-left: 240px; /* Same as the width of the sidebar */
-    padding: 20px;
 }
 
 .avatar {
@@ -55,4 +45,69 @@ html {
 .post img {
     width: 80%;
     border-radius: 5px;
+}
+
+.authenticate {
+  padding: 20px;
+  display: flex;
+  width: 90%;
+}
+
+.title_centered {
+    text-align: center;
+    font-size: x-large;
+}
+
+.title {
+    text-align: center;
+    margin-left: 45%;
+    font-size: x-large;
+}
+
+.menu {
+    text-align: left;
+    margin-left: 5%;
+    font-size: x-medium;
+}
+
+.btn {
+  border-radius:5px;
+}
+
+.inscription {
+  text-align: center;
+}
+
+.field {
+  font-size: x-medium;
+  text-align: center;
+  width: 30%;
+  padding-block: 10px;
+}
+
+.login {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 100%;
+}
+
+.login > form > p > input{
+  display:block;
+  text-align: center;
+  width: 100%;
+  padding-block: 10px;
+}
+
+.login > form > button.btn{
+  margin-left: 70%;
+}
+
+.subscribe {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 100%;
+  padding-top: 2%;
 }
