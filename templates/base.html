@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        {% load static %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'app.css' %}">
+        <title>LITreview</title>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>LITreview</h1>
+            {% if user.is_authenticated %}
+                <p>Welcome, <strong>{{ request.user }}</strong> !</p>
+                <p><a href="{% url 'open_ticket' %}">Ask for a review</a></p>
+                <p><a href="{% url 'logout' %}">Submit own review</a></p>
+                <p><a href="{% url 'logout' %}">Submit a review</a></p>
+                <p><a href="{% url 'follow_users' %}">Follow a user</a></p>
+                <p><a href="{% url 'logout' %}">Disconnect</a></p>
+            {% endif %}
+
+        </div>
+        <div class="main">
+            {% block content %}{% endblock content %}
+        </div>
+    </body>
+</html>
