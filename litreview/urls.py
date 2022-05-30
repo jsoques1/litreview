@@ -62,6 +62,10 @@ urlpatterns = [
     # path('photo/upload-multiple/', blog.views.create_multiple_photos,
     #      name='create_multiple_photos'),
     path('follow_users/', review.views.follow_users, name='follow_users'),
+    # path(
+    #     "follow_users/<int:pk>/unsubscribe/",
+    #     UserUnsubscribeView.as_view(),
+    #     name="unsubscribe_user",
 ]
 
 if settings.DEBUG:

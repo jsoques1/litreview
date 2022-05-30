@@ -67,7 +67,7 @@ html {
 .menu {
     text-align: left;
     margin-left: 5%;
-    font-size: x-medium;
+    font-size: medium;
 }
 
 .btn {
@@ -79,7 +79,7 @@ html {
 }
 
 .field {
-  font-size: x-medium;
+  font-size: medium;
   text-align: center;
   width: 30%;
   padding-block: 10px;
@@ -110,4 +110,74 @@ html {
   text-align: center;
   width: 100%;
   padding-top: 2%;
+}
+
+.follower-item {
+  display: flex;
+  width: 90%;
+  padding: 15px;
+  margin-left: 5%;
+  border: dotted 1px grey;
+}
+
+.subscription-item {
+  display: flex;
+  margin-left: 5%;
+  width: 90%;
+  border: dotted 1px grey;
+}
+
+.follower-item>a,
+.subscription-item>a {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.subscription-item>form {
+  margin-left: auto;
+
+}
+
+.title_add_followed_user {
+  margin-top: 30px;
+  margin-left: 40%;
+  width: 100%;
+}
+
+.title_list_following_user {
+  margin-top: 30px;
+  margin-left: 47%;
+  width: 100%;
+}
+
+.title_list_followed_user {
+  margin-top: 30px;
+  margin-left: 45%;
+  width: 100%;
+}
+
+.add_followed_user {
+    /* border: solid 1px black; */
+    padding-top: 10px;
+    width: 60%;
+    margin-left: 15%;
+}
+
+.add_followed_user>form {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2%;
+}
+
+.add_followed_user>form>p>label {
+  font-variant-caps: small-caps;
+  display: none;
+}
+
+#id_followed_user {
+    align-items: center;
+    padding-block: 10px;
+    width: 90%;
+    margin-right: 10px;
+    border-radius:5px;
 }

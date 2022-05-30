@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="utf-8" />
         {% load static %}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="{% static 'app.css' %}">
@@ -14,7 +14,7 @@
                 <p class="title"><strong>LitReview</strong></p>
                 <p class="menu"><a href="{% url 'open_ticket' %}">Flux</a></p>
                 <p class="menu"><a href="{% url 'logout' %}">Posts</a></p>
-                <p class="menu"><a href="{% url 'signup' %}">Abonnements</a></p>
+                <p class="menu"><a href="{% url 'follow_users' %}">Abonnements</a></p>
             <!--
                 <p class="menu"><a href="{% url 'follow_users' %}">Follow a user</a></p>
             -->

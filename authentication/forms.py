@@ -16,6 +16,10 @@ class SignupForm(UserCreationForm):
     password2 = forms.CharField(label="",
                                 widget=forms.PasswordInput(
                                     attrs={"class": "field", "placeholder": "Confirmer Mot de Passe"}))
+
+    password1.widget.attrs.update({'autocomplete': 'off'})
+    password2.widget.attrs.update({'autocomplete': 'off'})
+
 # class SignupForm(UserCreationForm):
 #     class Meta(UserCreationForm.Meta):
 #         model = get_user_model()
@@ -24,5 +28,6 @@ class SignupForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label="",
-                               widget=forms.TextInput(attrs={"class": "validate", "placeholder": "Nom d’utilisateur"}))
-    password = forms.CharField(label="", widget=forms.PasswordInput(attrs={"placeholder": "Mot de Passe"}))
+                               widget=forms.TextInput(attrs={"class": "field", "placeholder": "Nom d’utilisateur"}))
+    password = forms.CharField(label="", widget=forms.PasswordInput(
+                                attrs={"class": "field", "placeholder": "Mot de Passe"}))
