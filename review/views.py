@@ -5,7 +5,7 @@ from django.views.generic import View
 from django.conf import settings
 
 from . import forms
-
+from review.models import UserFollows
 
 @login_required
 def home(request):
@@ -37,6 +37,14 @@ def follow_users(request):
     print(f'follow_users:request={request}')
     # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
+
+    following_list = UserFollows.objects.filter(user=request.user)
+    follower_list = UserFollows.objects.filter(followed_user=request.user)
+
+    print(f'following_list={following_list}')
+    print(f'follower_list={follower_list}')
+    # form = self.form_class(request_user=self.request.user, former_followed_user=subscription_list)
+
     if request.method == 'POST':
         # form = forms.FollowUsersForm(request.POST, instance=request.user)
         form = forms.FollowUsersForm(request.POST)
@@ -51,4 +59,16 @@ def follow_users(request):
             followed_users.save()
 
             return redirect('home')
-    return render(request, 'review/follow_users.html', context={'form': form})
+        return render(request, 'review/follow_users.html', context={'form': form})
+
+    if request.method == 'GET':
+        print("form is GET")
+
+        context = {
+            "form": form,
+            "form_follower": follower_list,
+            "form_following": following_list,
+        }
+
+        print(f'context={context}')
+        return render(request, 'review/follow_users.html', context=context)

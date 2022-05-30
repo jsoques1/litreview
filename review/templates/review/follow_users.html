@@ -1,9 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-    <h2>Follow users</h2>
+
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<br/>
+<div class="title_add_followed_user">
+    <h2>Suivre d'autres utilisateurs</h2>
+</div>
+<div class="add_followed_user">
     <form method="post">
-        {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Submit</button>
+        {{ form.followed_user }}
+        <button type="submit"  id="followed_user" class="btn" value="subscribe">Envoyer</button>
     </form>
+</div>
+
+<br/>
+
+<div class="title_list_followed_user">
+    <h2>Abonnements</h2>
+</div>
+<div class="list_followed_user">
+    <ul class="followed_user">
+        <li>following list:</li>
+        <li>{{ following_list }}</li>
+        {% for users in following_list %}
+            <li class="subscription-item">
+                <p>{{users.followed_user}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="title_list_following_user">
+    <h2>Abonnés</h2>
+</div>
+<div class="list_following_user">
+    <ul class="following-list">
+        {% for users in follower_list %}
+            <li class="following-user">
+                <p>{{users.user}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% endblock content %}
