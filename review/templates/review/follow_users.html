@@ -3,20 +3,20 @@
 
 {% block content %}
 
-{% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-{% endif %}
+<!--{% if form.errors %}-->
+<!--    {% for field in form %}-->
+<!--        {% for error in field.errors %}-->
+<!--            <div class="alert alert-danger">-->
+<!--                <strong>{{ error|escape }}</strong>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    {% endfor %}-->
+<!--    {% for error in form.non_field_errors %}-->
+<!--        <div class="alert alert-danger">-->
+<!--            <strong>{{ error|escape }}</strong>-->
+<!--        </div>-->
+<!--    {% endfor %}-->
+<!--{% endif %}-->
 
 <br/>
 <div class="title_add_followed_user">
@@ -36,10 +36,13 @@
     <h2>Abonnements</h2>
 </div>
 <div class="list_followed_user">
-    {% for users in form_following %}
+    {% for user_follows in form_following %}
     <div class="followed_user">
-        <p class="subscriber">{{users.followed_user}}</p>
-        <button type="submit" class="btn" value="subscribe">se désabonner</button>
+        <p class="subscriber">{{user_follows.followed_user}}</p>
+        <form method="POST" action="{% url 'unfollow_user' user_follows_id=user_follows.id  %}">
+            {% csrf_token %}
+            <button type="submit" class="btn" value="subscribe">se désabonner</button>
+        </form>
     </div>
     {% endfor %}
 

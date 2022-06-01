@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.views.generic import View
 from django.conf import settings
 
@@ -38,8 +38,12 @@ def follow_users(request):
     # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
 
-    following_list = UserFollows.objects.filter(user=request.user)
-    follower_list = UserFollows.objects.filter(followed_user=request.user)
+    following_list1 = UserFollows.objects.filter(user=request.user).order_by('-user')
+    print(f'following_list1={following_list1}')
+    following_list2 = UserFollows.objects.filter(user=request.user).order_by('user')
+    print(f'following_list2={following_list2}')
+    following_list = UserFollows.objects.filter(user=request.user).order_by('-id')
+    follower_list = UserFollows.objects.filter(followed_user=request.user).order_by('-id')
 
     print(f'following_list={following_list}')
     print(f'follower_list={follower_list}')
@@ -58,7 +62,8 @@ def follow_users(request):
             print(followed_users)
             followed_users.save()
 
-            return redirect('home')
+            return redirect('follow_users')
+
         return render(request, 'review/follow_users.html', context={'form': form})
 
     if request.method == 'GET':
@@ -72,3 +77,33 @@ def follow_users(request):
 
         print(f'context={context}')
         return render(request, 'review/follow_users.html', context=context)
+
+
+@login_required
+def unfollow_user(request, user_follows_id):
+    print(f'unfollow_user:request={request}')
+    print(f'user_follows_id={user_follows_id}')
+    xid = user_follows_id
+    print(f'id={xid} {type(xid)}')
+
+    user_follows = UserFollows.objects.filter(id=xid)
+    print(f'id={user_follows} {type(user_follows)}')
+    user_follows.delete()
+
+    if request.method == 'POST':
+        form = forms.FollowUsersForm(request.POST)
+        if form.is_valid():
+            print("redirect('follow_users')")
+            return redirect('follow_users')
+
+    form = forms.FollowUsersForm()
+    following_list = UserFollows.objects.filter(user=request.user)
+    follower_list = UserFollows.objects.filter(followed_user=request.user)
+
+    context = {
+        "form": form,
+        "form_follower": follower_list,
+        "form_following": following_list,
+    }
+
+    return render(request, 'review/follow_users.html', context=context)

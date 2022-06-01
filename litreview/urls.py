@@ -63,9 +63,13 @@ urlpatterns = [
     #      name='create_multiple_photos'),
     path('follow_users/', review.views.follow_users, name='follow_users'),
     # path(
-    #     "follow_users/<int:pk>/unsubscribe/",
-    #     UserUnsubscribeView.as_view(),
-    #     name="unsubscribe_user",
+    #     "<int:user_follows_id>/unfollow_user/",
+    #     review.views.unfollow_user,
+    #     name="unfollow_user"),
+    path(
+        "unfollow_user/<int:user_follows_id>/",
+        review.views.unfollow_user,
+        name="unfollow_user"),
 ]
 
 if settings.DEBUG:
