@@ -5,7 +5,7 @@ from django.views.generic import View
 from django.conf import settings
 
 from . import forms
-from review.models import UserFollows
+from review.models import UserFollows, Ticket, Review
 
 
 @login_required
@@ -137,4 +137,41 @@ def open_ticket(request):
 
 @login_required
 def create_ticket_review(request):
-    print(f'open_ticket:request={request}')
+    print(f'create_ticket_review:request={request}')
+
+    if request.method == 'POST':
+
+        form_ticket = forms.TicketForm(request.POST, request.FILES)
+        form_review = forms.ReviewForm(request.POST)
+
+        if all([form_ticket.is_valid(), form_review.is_valid()]):
+            title = form_ticket.cleaned_data.get("title")
+            description = form_ticket.cleaned_data.get("description")
+            user = request.user
+            image = form_ticket.cleaned_data.get("image")
+            ticket_to_review = Ticket.objects.create(title=title, description=description, user=user, image=image)
+
+            rating = form_review.cleaned_data.get("rating")
+            headline = form_review.cleaned_data.get("headline")
+            body = form_review.cleaned_data.get("body")
+            Review.objects.create(
+                ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body
+            )
+            return redirect("feed")
+
+        context = {
+            "form_ticket": form_ticket,
+            "form_review": form_review,
+        }
+        return render(request, "review/create_ticket_review.html", context=context)
+
+    if request.method == 'GET':
+
+        form_ticket = forms.TicketForm()
+        form_review = forms.ReviewForm()
+
+        context = {
+            "form_ticket": form_ticket,
+            "form_review": form_review,
+        }
+        return render(request, "review/create_ticket_review.html", context=context)

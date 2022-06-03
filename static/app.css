@@ -105,12 +105,7 @@ html {
     text-align: center;
 }
 
-.field {
-    font-size: medium;
-    text-align: center;
-    width: 30%;
-    padding-block: 10px;
-}
+
 
 .login {
     margin-top: 30px;
@@ -224,23 +219,47 @@ html {
     padding-bottom: 2%;
 }
 
-.create_ticket{
+.create_ticket {
     margin-left: 10%;
     margin-right: 10%;
 }
 
-.ticket_title{
+.create_review {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.ticket_title,
+.review_title {
     text-align: center;
 }
 
+/*
+input, label {
+    display:block;
+}
+*/
+
+/*
 label#id_title,
 label#id_headline,
 label#id_body,
 label#id_description,
-label#id_image {
+label#id_image
+*/
+
+label
+{
+    display:block;
     font-weight: bold;
 }
 
+/*
+input {
+    display:block;
+    width: 80%;
+}
+*/
 
 input#id_title,
 input#id_headline,
@@ -250,9 +269,24 @@ input#id_image {
     width: calc(100% - 40px);
 }
 
-input#id_body,
-input#id_description {
+
+input#id_title,
+input#id_headline {
       display: inline-block;
+      width: 80%;
+}
+
+input#id_description,
+input#id_body {
+      display: inline-block;
+      width: 80%;
       padding: 15px 10px;
       line-height: 400%;
+}
+
+.field {
+    font-size: medium;
+    text-align: center;
+    width: 30%;
+    padding-block: 10px;
 }

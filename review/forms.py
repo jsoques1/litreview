@@ -20,8 +20,19 @@ class TicketForm(forms.ModelForm):
 
 
 class FollowUsersForm(forms.ModelForm):
-
     class Meta:
         model = models.UserFollows
         fields = ["followed_user"]
 
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = models.Review
+        fields = ["rating", "headline", "body"]
+
+    headline = forms.CharField(label=mark_safe('<strong>Titre</strong>'),
+                               widget=forms.TextInput(attrs={"class": "field", "placeholder": "Titre"}))
+    body = forms.CharField(label=mark_safe('<strong>Commentaire</strong>'), max_length=2048,
+                           widget=forms.TextInput(attrs={"class": "field", "placeholder": "Commentaire"}))
+    rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect,
+                               choices=[(0, "- 0"), (1, "- 1"), (2, "- 2"), (3, "- 3"), (4, "- 4"), (5, "- 5")])
