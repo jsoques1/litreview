@@ -7,30 +7,6 @@ from django.conf import settings
 from . import forms
 from review.models import UserFollows
 
-@login_required
-def home(request):
-    # logout(request)
-    # return redirect('login')
-    return render(request, 'review/home.html')
-
-
-@login_required
-def open_ticket(request):
-    print(f'open_ticket:request={request}')
-    form = forms.TicketForm()
-    if request.method == 'POST':
-        form = forms.TicketForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("form is valid")
-            ticket = form.save(commit=False)
-            # set the uploader to the user before saving the model
-            ticket.user = request.user
-            print(ticket)
-            # now we can save
-            ticket.save()
-            return redirect('home')
-    return render(request, 'review/open_ticket.html', context={'form': form})
-
 
 @login_required
 def follow_users(request):
@@ -107,3 +83,58 @@ def unfollow_user(request, user_follows_id):
     }
 
     return render(request, 'review/follow_users.html', context=context)
+
+
+@login_required
+def home(request):
+    # logout(request)
+    # return redirect('login')
+    return render(request, 'review/home.html')
+
+
+@login_required
+def stream(request):
+    # logout(request)
+    # return redirect('login')
+    return render(request, 'review/stream.html')
+
+
+@login_required
+def create_ticket(request):
+    print(f'open_ticket:request={request}')
+    form = forms.TicketForm()
+    if request.method == 'POST':
+        form = forms.TicketForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("form is valid")
+            ticket = form.save(commit=False)
+            # set the uploader to the user before saving the model
+            ticket.user = request.user
+            print(ticket)
+            # now we can save
+            ticket.save()
+            return redirect('stream')
+    return render(request, 'review/create_ticket.html', context={'form': form})
+
+
+@login_required
+def open_ticket(request):
+    print(f'open_ticket:request={request}')
+    form = forms.TicketForm()
+    if request.method == 'POST':
+        form = forms.TicketForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("form is valid")
+            ticket = form.save(commit=False)
+            # set the uploader to the user before saving the model
+            ticket.user = request.user
+            print(ticket)
+            # now we can save
+            ticket.save()
+            return redirect('streams')
+    return render(request, 'review/create_ticket.html', context={'form': form})
+
+
+@login_required
+def create_ticket_review(request):
+    print(f'open_ticket:request={request}')

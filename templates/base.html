@@ -12,7 +12,7 @@
             {% if user.is_authenticated %}
                 <p><strong>Bienvenue {{ request.user }} !</strong></p>
                 <p class="title"><strong>LitReview</strong></p>
-                <p class="menu"><a href="{% url 'open_ticket' %}">Flux</a></p>
+                <p class="menu"><a href="{% url 'create_ticket' %}">Flux</a></p>
                 <p class="menu"><a href="{% url 'logout' %}">Posts</a></p>
                 <p class="menu"><a href="{% url 'follow_users' %}">Abonnements</a></p>
             <!--
@@ -24,8 +24,8 @@
             {% endif %}
         </div>
 
-        <div class="main">
+<!--        <div class="main">-->
             {% block content %}{% endblock content %}
-        </div>
+<!--        </div>-->
     </body>
 </html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="stream">
+
+    <div class="stream_action">
+        <form method="GET"  action="{% url 'create_ticket' %}">
+            <button  class="btn" type="submit">Demander une critique</button>
+        </form>
+     </div>
+    <div class="stream_action">
+        <form method="GET"  action="{% url 'create_ticket_review' %}">
+            <button  class="btn" type="submit">Créer une critique</button>
+        </form>
+    </div>
+
+<!--    <div class="grid-container">-->
+<!--        {% for post in posts %}-->
+<!--            {% if post.content_type == 'TICKET' %}-->
+<!--                {% include 'ticket_snippet.html' %}-->
+<!--            {% elif post.content_type == 'REVIEW' %}-->
+<!--                {% include 'review_snippet.html' %}-->
+<!--            {% endif %}-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+
+</div>
+{% endblock content %}

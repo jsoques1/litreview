@@ -29,6 +29,3 @@ def signup_page(request):
             return redirect(settings.LOGIN_REDIRECT_URL)
     return render(request, 'authentication/signup.html', context={'form': form})
 
-
-def fake_admin(request):
-    pass

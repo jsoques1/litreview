@@ -70,6 +70,18 @@ urlpatterns = [
         "unfollow_user/<int:user_follows_id>/",
         review.views.unfollow_user,
         name="unfollow_user"),
+    path("stream/", review.views.stream, name="stream"),
+    # path("posts/", review.views.posts, name="posts"),
+    path(
+        "ticket/create/",
+        review.views.create_ticket,
+        name="create_ticket",
+    ),
+    path(
+        "ticket_review/create/",
+        review.views.create_ticket_review,
+        name="create_ticket_review",
+    ),
 ]
 
 if settings.DEBUG:

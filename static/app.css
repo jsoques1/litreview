@@ -1,6 +1,6 @@
 a {
-  color: white !important;
-  text-decoration: none;
+    color: white !important;
+    text-decoration: none;
 }
 
 html {
@@ -8,12 +8,13 @@ html {
 }
 
 .top_bar {
-  height: 50px;
-  display: flex;
-  justify-content: space-around;
-  background: rgba(95, 94, 94, 0.933);
-  color: white;
-  align-items: center;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(95, 94, 94, 0.933);
+    color: white;
+    align-items: center;
+    z-index: 1;
 }
 
 .top_bar a {
@@ -26,13 +27,12 @@ html {
     color: #f1f1f1;
 }
 
-.avatar {
-    width: 80%;
-    border-radius: 10%;
-    display: block;
-    margin: auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
+
+.stream {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 20px;
+    justify-content: space-around;
 }
 
 .grid-container {
@@ -42,15 +42,30 @@ html {
     text-align: center;
 }
 
+.action-button,
+.feed-button {
+    display: flex;
+    justify-content: center;
+}
+
+.feed-button>form {
+    margin-left: auto;
+    margin-right: auto;
+}
+.action-button  {
+    margin-left: 60%;
+    width: max-content;
+}
+
 .post img {
     width: 80%;
     border-radius: 5px;
 }
 
 .authenticate {
-  padding: 20px;
-  display: flex;
-  width: 90%;
+    padding: 20px;
+    display: flex;
+    width: 90%;
 }
 
 .title_centered {
@@ -70,91 +85,104 @@ html {
     font-size: medium;
 }
 
+.stream {
+    display: flex;
+    justify-content: center;
+}
+
+.stream_action {
+    padding-block: 2%;
+    margin-right: 2%;
+}
+
 .btn {
-  border-radius:5px;
+  /* padding-block: 2%; */
+    height: 40px;
+    border-radius:5px;
 }
 
 .inscription {
-  text-align: center;
+    text-align: center;
 }
 
 .field {
-  font-size: medium;
-  text-align: center;
-  width: 30%;
-  padding-block: 10px;
+    font-size: medium;
+    text-align: center;
+    width: 30%;
+    padding-block: 10px;
 }
 
 .login {
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  width: 100%;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
 }
 
 .login > form > p > input{
-  display:block;
-  text-align: center;
-  width: 100%;
-  padding-block: 10px;
+    display:block;
+    text-align: center;
+    width: 100%;
+    padding-block: 10px;
 }
 
 .login > form > button.btn{
-  margin-left: 70%;
+    margin-left: 70%;
 }
 
 .subscribe {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  width: 100%;
-  padding-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
+    padding-top: 2%;
 }
 
 .follower-item {
-  display: flex;
-  width: 90%;
-  padding: 15px;
-  margin-left: 5%;
-  border: dotted 1px grey;
+    display: flex;
+    width: 90%;
+    padding: 15px;
+    margin-left: 5%;
+    border: dotted 1px grey;
 }
 
 .subscriber {
-  display: flex;
-  margin-left: 5%;
-  width: 90%;
-  border: dotted 1px grey;
+    display: flex;
+    margin-left: 5%;
+    width: 90%;
+    border: dotted 1px grey;
 }
 
 .follower-item>a,
 .subscription-item>a {
-  margin-top: auto;
-  margin-bottom: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .subscription-item>form {
-  margin-left: auto;
+    margin-left: auto;
 
 }
 
 .title_add_followed_user {
-  margin-top: 30px;
-  margin-left: 40%;
-  width: 100%;
+    margin-top: 30px;
+    margin-left: 40%;
+    width: 100%;
 }
 
 .title_list_following_user {
-  margin-top: 30px;
-  margin-left: 47%;
-  width: 100%;
+    margin-top: 30px;
+    margin-left: 47%;
+    width: 100%;
 }
 
 .title_list_followed_user {
-  margin-top: 30px;
-  margin-left: 45%;
-  width: 100%;
+    margin-top: 30px;
+    margin-left: 45%;
+    width: 100%;
 }
+
 
 .add_followed_user {
     /* border: solid 1px black; */
@@ -164,14 +192,14 @@ html {
 }
 
 .add_followed_user>form {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 2%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2%;
 }
 
 .add_followed_user>form>p>label {
-  font-variant-caps: small-caps;
-  display: none;
+    font-variant-caps: small-caps;
+    display: none;
 }
 
 #id_followed_user {
@@ -191,7 +219,40 @@ html {
 }
 
 .followed_user {
-  display: flex;
-  justify-content: left;
-  padding-bottom: 2%;
+    display: flex;
+    justify-content: left;
+    padding-bottom: 2%;
+}
+
+.create_ticket{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.ticket_title{
+    text-align: center;
+}
+
+label#id_title,
+label#id_headline,
+label#id_body,
+label#id_description,
+label#id_image {
+    font-weight: bold;
+}
+
+
+input#id_title,
+input#id_headline,
+input#id_body,
+input#id_description,
+input#id_image {
+    width: calc(100% - 40px);
+}
+
+input#id_body,
+input#id_description {
+      display: inline-block;
+      padding: 15px 10px;
+      line-height: 400%;
 }
