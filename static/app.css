@@ -272,17 +272,39 @@ input#id_image {
 
 input#id_title,
 input#id_headline {
-      display: inline-block;
-      width: 80%;
+    display: inline-block;
+    width: 80%;
 }
 
 input#id_description,
 input#id_body {
-      display: inline-block;
-      width: 80%;
-      padding: 15px 10px;
-      line-height: 400%;
+    display: inline-block;
+    width: 80%;
+    padding: 15px 10px;
+    line-height: 400%;
 }
+
+#id_rating{
+    display: flex;
+    margin-left: 5%;
+    width: 90%;
+}
+
+/*
+label:id_rating_0,
+label:id_rating_1,
+label:id_rating_2,
+label:id_rating_3,
+label:id_rating_4,
+label:id_rating_5
+ {
+     display: flex;
+   width: 30px;
+
+    margin-right: 10px;
+
+}
+*/
 
 .field {
     font-size: medium;

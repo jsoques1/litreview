@@ -34,5 +34,6 @@ class ReviewForm(forms.ModelForm):
                                widget=forms.TextInput(attrs={"class": "field", "placeholder": "Titre"}))
     body = forms.CharField(label=mark_safe('<strong>Commentaire</strong>'), max_length=2048,
                            widget=forms.TextInput(attrs={"class": "field", "placeholder": "Commentaire"}))
-    rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect,
-                               choices=[(0, "- 0"), (1, "- 1"), (2, "- 2"), (3, "- 3"), (4, "- 4"), (5, "- 5")])
+    rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect(),
+                               choices=[('zero', "- 0"), ('un', "- 1"), ('deux', "- 2"), ('trois', "- 3"),
+                                        ('quatre', "- 4"), ('cinq', "- 5")])
