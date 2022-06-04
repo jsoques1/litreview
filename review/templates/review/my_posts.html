@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load review_extras %}
+{% block content %}
+
+<div class="my_posts">
+
+    <div class="grid_container">
+
+        {% for a_post in my_posts %}
+            {% if a_post|model_type  == 'Ticket' %}
+                    <h3> Ticket : {{ a_post }} </h3>
+                {% include 'review/partials/ticket_snippet.html' with post=a_post %}
+            {% elif post.content_type == 'Review' %}
+                <h3> Revue :  {{ a_post }} </h3>
+                {% include 'review/partials/review_snippet.html' with post=a_post%}
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}

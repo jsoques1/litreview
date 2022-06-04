@@ -13,9 +13,9 @@ class TicketForm(forms.ModelForm):
         fields = ["title", "description", "image"]
 
     title = forms.CharField(label=mark_safe('<strong>Titre</strong>'),
-                            widget=forms.TextInput(attrs={"class": "field", "placeholder": "Titre"}))
+                            widget=forms.TextInput(attrs={"class": "field_left", "placeholder": "Titre"}))
     description = forms.CharField(label=mark_safe('<strong>Description</strong>'), max_length=2048,
-                                  widget=forms.TextInput(attrs={"class": "field", "placeholder": "Description"}))
+                                  widget=forms.TextInput(attrs={"class": "field_left", "placeholder": "Description"}))
     image = forms.ImageField(label=mark_safe('<strong>Image</strong>'), required=False)
 
 
@@ -31,9 +31,10 @@ class ReviewForm(forms.ModelForm):
         fields = ["rating", "headline", "body"]
 
     headline = forms.CharField(label=mark_safe('<strong>Titre</strong>'),
-                               widget=forms.TextInput(attrs={"class": "field", "placeholder": "Titre"}))
+                               widget=forms.TextInput(attrs={"class": "field_left", "placeholder": "Titre"}))
     body = forms.CharField(label=mark_safe('<strong>Commentaire</strong>'), max_length=2048,
-                           widget=forms.TextInput(attrs={"class": "field", "placeholder": "Commentaire"}))
-    rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect(),
-                               choices=[('zero', "- 0"), ('un', "- 1"), ('deux', "- 2"), ('trois', "- 3"),
-                                        ('quatre', "- 4"), ('cinq', "- 5")])
+                           widget=forms.TextInput(attrs={"class": "field_left", "placeholder": "Commentaire"}))
+    rating = forms.ChoiceField(label="Note", widget=forms.RadioSelect(attrs={"class": "id_rating_label"}),
+                               choices=[(0, "- 0"), (1, "- 1"), (2, "- 2"),
+                                        (3, "- 3"),
+                                        (4, "- 4"), (5, "- 5")])

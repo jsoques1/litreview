@@ -19,6 +19,7 @@ def get_reviewing_user(context, user):
         return 'vous'
     return user.username
 
+
 @register.filter
 def get_reviewed_at(posted_at):
     seconds_ago = (timezone.now() - posted_at).total_seconds()
@@ -27,3 +28,8 @@ def get_reviewed_at(posted_at):
     elif seconds_ago <= DAY:
         return f'Publié il y a {int(seconds_ago // HOUR)} heures.'
     return f'Publié le {posted_at.strftime("%d %b %y à %Hh%M")}'
+
+
+@register.filter()
+def range_star(default=5):
+    return range(1, default + 1, 1)

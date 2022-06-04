@@ -1,0 +1,39 @@
+{% block content %}
+{% load review_extras %}
+
+{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} publié une critique:
+<div class="review-post">
+    <div class="review-ww">
+        {{post.time_created}}
+    </div>
+    <h3 class="review-content"> {{post.headline}} </h3>
+    <p class="mb-2 text-xs" id="stars">
+
+        {% if post.rating is not None %}
+            {% for value in 5|range_star %}
+                {% if value <= post.rating %}
+                    <img class="star-icon" src="{% static '/img/icons8-star-filled-50.png %}"/>
+                {% else %}
+                    <img class="star-icon" src="{% static '/img/icons8-star-empty-50.png' %}"/>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </p>
+        <p class="review-content">  {{post.body}}  </p>
+</div>
+
+ sur cet ouvrage:
+<div class="ticket-review-post">
+    {{post.ticket.id}}.  {{post.ticket.title}}
+    <div class="review-ww">
+        le {{post.ticket.time_created}} de
+        {% if post.user == request.user %} vous {% else%} {{post.user}} {% endif %}
+    </div>
+    {{post.ticket.description}}
+    {% if post.ticket.image %}
+    <div class="cover">
+        <img  src="{{post.ticket.image.url}} " />
+    </div>
+    {% endif %}
+
+{% endblock content %}

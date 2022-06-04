@@ -1,8 +1,10 @@
-from django.contrib.auth import authenticate, login, logout
+from itertools import chain
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render, reverse
-from django.views.generic import View
-from django.conf import settings
+from django.db.models import Q
+
+
+from django.shortcuts import redirect, render
+
 
 from . import forms
 from review.models import UserFollows, Ticket, Review
@@ -96,8 +98,25 @@ def home(request):
 def stream(request):
     # logout(request)
     # return redirect('login')
-    return render(request, 'review/stream.html')
+    # return render(request, 'review/stream.html')
 
+    reviews = Review.objects.select_related("ticket").filter(
+        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+    )
+    # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
+    # ticket w/o reviews
+    tickets = Ticket.objects.filter(
+        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+    ).exclude(id__in=reviews.values("ticket_id"))
+    # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
+    # print(tickets.query)
+    # prepare the mixed posts
+    posts = sorted(chain(reviews, tickets), key=lambda post: (post.time_created), reverse=True)
+    context = {"posts": posts}
+
+    print(f'context={context}')
+
+    return render(request, "review/stream.html", context=context)
 
 @login_required
 def create_ticket(request):
@@ -143,6 +162,8 @@ def create_ticket_review(request):
 
         form_ticket = forms.TicketForm(request.POST, request.FILES)
         form_review = forms.ReviewForm(request.POST)
+        print(f'create_ticket_review:form_ticket.is_valid()={form_ticket.is_valid()}')
+        print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
 
         if all([form_ticket.is_valid(), form_review.is_valid()]):
             title = form_ticket.cleaned_data.get("title")
@@ -157,7 +178,7 @@ def create_ticket_review(request):
             Review.objects.create(
                 ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body
             )
-            return redirect("feed")
+            return redirect("stream")
 
         context = {
             "form_ticket": form_ticket,
@@ -175,3 +196,24 @@ def create_ticket_review(request):
             "form_review": form_review,
         }
         return render(request, "review/create_ticket_review.html", context=context)
+
+
+@login_required()
+def my_posts(request):
+    print(f'posts:request={request}')
+
+    if request.method == 'GET':
+        reviews = Review.objects.select_related("ticket").filter(Q(user=request.user))
+        # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
+
+        tickets = Ticket.objects.filter(Q(user=request.user)).exclude(id__in=reviews.values("ticket_id"))
+        # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
+
+        my_posts = sorted(chain(reviews, tickets), key=lambda post: (post.time_created), reverse=True)
+        context = {"my_posts": my_posts}
+
+        print(f'posts:context={context}')
+
+        return render(request, "review/my_posts.html", context=context)
+
+    # if request.method == 'POST':

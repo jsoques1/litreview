@@ -1,0 +1,35 @@
+{% block content %}
+
+{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} demandé une critique:
+<div class="ticket-post">
+    {{post.id}}.  {{post.title}}
+    <div class="review-ww">
+        le {{post.time_created}}
+    </div>
+    {{post.description}}
+
+    {% if post.image %}
+    <div class="cover">
+        <img  src="{{post.image.url}} " />
+    </div>
+    {% endif %}
+    {% if request.get_full_path == "/review/feed/" %}
+    <div class="action-button">
+        <form method="GET" action="{% url 'review_create' post.id  %}">
+            <button class="btn btn-default" type="submit">Créer une critique</button>
+        </form>
+    </div>
+    {% endif %}
+    {% if request.get_full_path == "/review/posts/" %}
+    <div class="action-button">
+        <form method="GET" action="{% url 'ticket_delete' post.id  %}">
+            <button class="btn btn-default" type="submit">Supprimer votre demande</button>
+        </form>
+
+        <form method="GET" action="{% url 'ticket_update' post.id  %}">
+            <button class="btn btn-default" type="submit"  value="Update">Modifier votre demande</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

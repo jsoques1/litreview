@@ -12,12 +12,9 @@
             {% if user.is_authenticated %}
                 <p><strong>Bienvenue {{ request.user }} !</strong></p>
                 <p class="title"><strong>LitReview</strong></p>
-                <p class="menu"><a href="{% url 'create_ticket' %}">Flux</a></p>
-                <p class="menu"><a href="{% url 'logout' %}">Posts</a></p>
+                <p class="menu"><a href="{% url 'stream' %}">Flux</a></p>
+                <p class="menu"><a href="{% url 'my_posts' %}">Posts</a></p>
                 <p class="menu"><a href="{% url 'follow_users' %}">Abonnements</a></p>
-            <!--
-                <p class="menu"><a href="{% url 'follow_users' %}">Follow a user</a></p>
-            -->
                 <p class="menu"><a href="{% url 'logout' %}">Disconnect</a></p>
             {% else %}
                 <p class="title_centered"><strong>LitReview</strong></p>
