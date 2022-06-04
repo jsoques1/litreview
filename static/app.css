@@ -63,13 +63,14 @@ html {
     width: 80%;
     border-radius: 5px;
 }
+*/
 
 .authenticate {
     padding: 20px;
     display: flex;
     width: 90%;
 }
-*/
+
 
 .title_centered {
     text-align: center;
@@ -393,4 +394,50 @@ label:id_rating_5
     text-align: left;
     width: 30%;
     padding-block: 10px;
+}
+
+
+
+.review-post {
+  border: dotted 1px black;
+  margin: 5px;
+  padding: 5px;
+
+}
+
+.post_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post_title {
+  font-size: medium;
+  text-align: left;
+}
+
+.post_date {
+  font-size: medium;
+  text-align: right;
+}
+
+#stars.mb-2.text-xs {
+  margin-left: 40%;
+}
+
+.star-icon {
+  width: 5%;
+}
+
+.image {
+	max-width: 400px;
+	max-height: 400px;
+}
+
+.ticket-post,
+.ticket-review-post,
+.review-post {
+  border: dotted 1px black;
+  margin: 5px;
+  padding: 5px;
+
 }

@@ -8,16 +8,16 @@
     </div>
     <h3 class="review-content"> {{post.headline}} </h3>
     <p class="mb-2 text-xs" id="stars">
+        <h4> rating= {{ post.rating }}</h4>
 
-        {% if post.rating is not None %}
-            {% for value in 5|range_star %}
-                {% if value <= post.rating %}
-                    <img class="star-icon" src="{% static '/img/icons8-star-filled-50.png %}"/>
-                {% else %}
-                    <img class="star-icon" src="{% static '/img/icons8-star-empty-50.png' %}"/>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+        {% for value in 5|range_star %}
+            <h4> value= {{ value }}</h4>
+            {% if value <= post.rating %}
+                <img class="star-icon" src="{% static '/img/icons8-star-filled-50.png %}"/>
+            {% else %}
+                <img class="star-icon" src="{% static '/img/icons8-star-empty-50.png' %}"/>
+            {% endif %}
+        {% endfor %}
     </p>
         <p class="review-content">  {{post.body}}  </p>
 </div>
@@ -31,9 +31,10 @@
     </div>
     {{post.ticket.description}}
     {% if post.ticket.image %}
-    <div class="cover">
+    <div class="image">
         <img  src="{{post.ticket.image.url}} " />
     </div>
     {% endif %}
 
+</div>
 {% endblock content %}
