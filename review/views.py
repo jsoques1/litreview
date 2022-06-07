@@ -103,20 +103,20 @@ def stream(request):
     reviews = Review.objects.select_related("ticket").filter(
         Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
     )
-    # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
     # ticket w/o reviews
     tickets = Ticket.objects.filter(
         Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
     ).exclude(id__in=reviews.values("ticket_id"))
-    # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
-    # print(tickets.query)
+
     # prepare the mixed posts
-    posts = sorted(chain(reviews, tickets), key=lambda post: (post.time_created), reverse=True)
-    context = {"posts": posts}
+    posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+    star_range = [0, 1, 2, 3, 4, 5]
+    context = {"posts": posts, "star_range": star_range}
 
     print(f'context={context}')
 
     return render(request, "review/stream.html", context=context)
+
 
 @login_required
 def create_ticket(request):
@@ -133,24 +133,6 @@ def create_ticket(request):
             # now we can save
             ticket.save()
             return redirect('stream')
-    return render(request, 'review/create_ticket.html', context={'form': form})
-
-
-@login_required
-def open_ticket(request):
-    print(f'open_ticket:request={request}')
-    form = forms.TicketForm()
-    if request.method == 'POST':
-        form = forms.TicketForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("form is valid")
-            ticket = form.save(commit=False)
-            # set the uploader to the user before saving the model
-            ticket.user = request.user
-            print(ticket)
-            # now we can save
-            ticket.save()
-            return redirect('streams')
     return render(request, 'review/create_ticket.html', context={'form': form})
 
 
@@ -209,9 +191,9 @@ def my_posts(request):
         tickets = Ticket.objects.filter(Q(user=request.user)).exclude(id__in=reviews.values("ticket_id"))
         # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
-        my_posts = sorted(chain(reviews, tickets), key=lambda post: (post.time_created), reverse=True)
-        context = {"my_posts": my_posts}
-
+        my_posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+        star_range = [0, 1, 2, 3, 4, 5]
+        context = {"my_posts": my_posts, "star_range": star_range}
         print(f'posts:context={context}')
 
         return render(request, "review/my_posts.html", context=context)

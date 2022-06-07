@@ -9,9 +9,9 @@
     </div>
 
     <div class="rating">
-        <h3 {{post.headline}} - </h3>
-        {% for value in 5|range_star %}
-            {% if value <= post.rating %}
+        <h3> {{post.headline}} - </h3>
+        {% for rating_value in star_range %}
+            {% if rating_value <= post.rating %}
                 <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}"/>
             {% else %}
                 <img class="star" src="{% static '/img/icons8-star-empty-50.png' %}"/>

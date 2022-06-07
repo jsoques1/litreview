@@ -36,7 +36,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('home/', review.views.home, name='home'),
     path('signup/', authentication.views.signup_page, name='signup'),
-    path("open_ticket/", review.views.open_ticket, name="open_ticket"),
+    # path("open_ticket/", review.views.open_ticket, name="open_ticket"),
     path('follow_users/', review.views.follow_users, name='follow_users'),
     path(
         "unfollow_user/<int:user_follows_id>/",
