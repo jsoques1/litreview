@@ -3,20 +3,20 @@
 
 {% block content %}
 
-{% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-{% endif %}
+<!--{% if form.errors %}-->
+<!--    {% for field in form %}-->
+<!--        {% for error in field.errors %}-->
+<!--            <div class="alert alert-danger">-->
+<!--                <strong>{{ error|escape }}</strong>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    {% endfor %}-->
+<!--    {% for error in form.non_field_errors %}-->
+<!--        <div class="alert alert-danger">-->
+<!--            <strong>{{ error|escape }}</strong>-->
+<!--        </div>-->
+<!--    {% endfor %}-->
+<!--{% endif %}-->
 
 <br/>
 <div class="title_add_followed_user">
@@ -36,28 +36,29 @@
     <h2>Abonnements</h2>
 </div>
 <div class="list_followed_user">
-    <ul class="followed_user">
-        <li>following list:</li>
-        <li>{{ following_list }}</li>
-        {% for users in following_list %}
-            <li class="subscription-item">
-                <p>{{users.followed_user}}</p>
-            </li>
-        {% endfor %}
-    </ul>
+    {% for user_follows in form_following %}
+    <div class="followed_user">
+        <p class="subscriber">{{user_follows.followed_user}}</p>
+        <form method="POST" action="{% url 'unfollow_user' user_follows_id=user_follows.id  %}">
+            {% csrf_token %}
+            <button type="submit" class="btn" value="subscribe">se désabonner</button>
+        </form>
+    </div>
+    {% endfor %}
+
 </div>
 
 <div class="title_list_following_user">
     <h2>Abonnés</h2>
 </div>
 <div class="list_following_user">
-    <ul class="following-list">
-        {% for users in follower_list %}
-            <li class="following-user">
-                <p>{{users.user}}</p>
-            </li>
+    <div class="following-list">
+        {% for users in form_follower %}
+            <p class="subscriber">
+                {{users.user}}
+            </p>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
 {% endblock content %}

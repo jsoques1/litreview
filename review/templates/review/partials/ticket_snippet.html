@@ -1,0 +1,23 @@
+{% block content %}
+
+
+<div class="ticket-post">
+    <div class="post_header">
+        <p>{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} demandé une critique: {{post.title}}</p>
+        <p >le {{post.time_created}}</p>
+    </div>
+
+
+
+
+
+    {{post.description}}
+
+    {% if post.image %}
+        <div class="div_image">
+            <img class="image" src="{{post.image.url}} " />
+        </div>
+    {% endif %}
+
+ </div>
+{% endblock content %}

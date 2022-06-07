@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load review_extras %}
+{% block content %}
+
+<div class="stream_actions">
+
+    <div class="stream_action">
+        <form method="GET"  action="{% url 'create_ticket' %}">
+            <button  class="btn" type="submit">Demander une critique</button>
+        </form>
+     </div>
+    <div class="stream_action">
+        <form method="GET"  action="{% url 'create_ticket_review' %}">
+            <button  class="btn" type="submit">Créer une critique</button>
+        </form>
+    </div>
+</div>
+
+<div class="stream_data">
+
+    <div class="grid_container">
+
+        {% for a_post in posts %}
+
+            {% if a_post|model_type  == 'Ticket' %}
+                <h3> Ticket : {{ a_post }} </h3>
+                {% include 'review/partials/ticket_snippet.html' with post=a_post %}
+            {% elif a_post|model_type == 'Review' %}
+                <h3> Revue :  {{ a_post }} </h3>
+                {% include 'review/partials/review_snippet.html' with post=a_post %}
+            {% else %}
+                <h3> a_post|model_type inattendu </h3>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+
+</div>
+{% endblock content %}
