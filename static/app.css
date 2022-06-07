@@ -420,12 +420,17 @@ label:id_rating_5
   text-align: right;
 }
 
-#stars.mb-2.text-xs {
-  margin-left: 40%;
+.rating {
+    display: flex;
+    justify-content: left;
 }
 
-.star-icon {
-  width: 5%;
+.star {
+    max-width: 20px;
+    max-height: 20px;
+	padding-top: 15px;
+	margin-left: 5px;
+}
 }
 
 .image {

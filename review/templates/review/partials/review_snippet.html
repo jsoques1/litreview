@@ -1,25 +1,24 @@
 {% block content %}
+{% load static %}
 {% load review_extras %}
 
-{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} publié une critique:
+{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} publié une revue:
 <div class="review-post">
     <div class="review-ww">
         {{post.time_created}}
     </div>
-    <h3 class="review-content"> {{post.headline}} </h3>
-    <p class="mb-2 text-xs" id="stars">
-        <h4> rating= {{ post.rating }}</h4>
 
+    <div class="rating">
+        <h3 class="review-content"> {{post.headline}} - </h3>
         {% for value in 5|range_star %}
-            <h4> value= {{ value }}</h4>
             {% if value <= post.rating %}
-                <img class="star-icon" src="{% static '/img/icons8-star-filled-50.png %}"/>
+                <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}"/>
             {% else %}
-                <img class="star-icon" src="{% static '/img/icons8-star-empty-50.png' %}"/>
+                <img class="star" src="{% static '/img/icons8-star-empty-50.png' %}"/>
             {% endif %}
         {% endfor %}
-    </p>
-        <p class="review-content">  {{post.body}}  </p>
+    </div>
+    <p class="review-content">  {{post.body}}  </p>
 </div>
 
  sur cet ouvrage:
