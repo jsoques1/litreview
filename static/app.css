@@ -398,11 +398,24 @@ label:id_rating_5
 
 
 
-.review-post {
-  border: dotted 1px black;
-  margin: 5px;
-  padding: 5px;
+.review_post {
+    display: grid;
+    border: solid 1px black;
+    margin: 5px;
+    padding: 5px;
+}
 
+.review_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket_review_post {
+    display: grid;
+    justify-content: normal;
+    border: solid 1px black;
+    margin: 5px;
+    padding: 5px;
 }
 
 .post_header {
@@ -431,18 +444,16 @@ label:id_rating_5
 	padding-top: 15px;
 	margin-left: 5px;
 }
-}
 
 .image {
 	max-width: 400px;
 	max-height: 400px;
 }
 
-.ticket-post,
-.ticket-review-post,
-.review-post {
-  border: dotted 1px black;
-  margin: 5px;
-  padding: 5px;
+.ticket_post  {
+    display: grid;
+    border: solid 1px black;
+    margin: 5px;
+    padding: 5px;
 
 }
