@@ -16,10 +16,10 @@ def follow_users(request):
     # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
 
-    following_list1 = UserFollows.objects.filter(user=request.user).order_by('-user')
-    print(f'following_list1={following_list1}')
-    following_list2 = UserFollows.objects.filter(user=request.user).order_by('user')
-    print(f'following_list2={following_list2}')
+    # following_list1 = UserFollows.objects.filter(user=request.user).order_by('-user')
+    # print(f'following_list1={following_list1}')
+    # following_list2 = UserFollows.objects.filter(user=request.user).order_by('user')
+    # print(f'following_list2={following_list2}')
     following_list = UserFollows.objects.filter(user=request.user).order_by('-id')
     follower_list = UserFollows.objects.filter(followed_user=request.user).order_by('-id')
 

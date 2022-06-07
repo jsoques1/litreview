@@ -4,7 +4,9 @@
 
 <div class="review_post">
     <div class="review_header">
-        <p>{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} demandé une critique: {{post.title}}</p>
+        <p>{% if post.user == request.user %} Vous avez
+            {% else%} {{post.user}} a
+            {% endif %} publié une critique {{post.title}}</p>
         <p >le {{post.time_created}}</p>
     </div>
 
@@ -22,16 +24,34 @@
     <h3 class="review_body">  {{post.body}}  </h3>
 
     <div class="ticket_review_post">
-        <p>Ticket - {{request.user}}</p>
+        <div class="review_header">
+            <p>Ticket - {% if post.user == request.user %}Vous
+                {% else%}{{post.user}}
+                {% endif %}</p>
+            <p >le {{post.time_created}}</p>
+        </div>
         <p>{{post.ticket.description}}<p>
         {% if post.ticket.image %}
         <div class="image">
             <img  src="{{post.ticket.image.url}} " />
         </div>
-        {% endif %}
     </div>
+    {% endif %}
 </div>
 
-
+{% if post.user == request.user %}
+<div class="ticket_review_post">
+    <div class="review_header">
+    <p>Vous avez publié un ticket</p>
+        <p >le {{post.time_created}}</p>
+    </div>
+    <p>{{post.ticket.description}}<p>
+    {% if post.ticket.image %}
+    <div class="image">
+        <img  src="{{post.ticket.image.url}} " />
+    </div>
+    {% endif %}
+</div>
+{% endif %}
 
 {% endblock content %}
