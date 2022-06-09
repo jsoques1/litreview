@@ -37,6 +37,17 @@
         </div>
     </div>
     {% endif %}
+
+    <div class="action-button">
+        <form method="POST" action="{% url 'update_review' ticket_id=post.ticket.id review_id=post.id %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Modifier</button>
+        </form>
+        <form method="POST" action="{% url 'delete_review' ticket_id=post.ticket.id review_id=post.id %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Supprimer</button>
+        </form>
+    </div>
 </div>
 
 {% if post.user == request.user %}
@@ -51,7 +62,18 @@
         <img  src="{{post.ticket.image.url}} " />
     </div>
     {% endif %}
+    <div class="action-button">
+                <form method="POST" action="{% url 'update_ticket' ticket_id=post.ticket.id %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Modifier</button>
+        </form>
+        <form method="POST" action="{% url 'delete_ticket' ticket_id=post.ticket.id %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Supprimer</button>
+        </form>
+    </div>
 </div>
+
 {% endif %}
 
 {% endblock content %}

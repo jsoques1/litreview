@@ -100,9 +100,11 @@ def stream(request):
     # return redirect('login')
     # return render(request, 'review/stream.html')
 
-    reviews = Review.objects.select_related("ticket").filter(
-        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
-    )
+    # reviews = Review.objects.select_related("ticket").filter(
+    #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+    # )
+    reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user))
+
     # ticket w/o reviews
     tickets = Ticket.objects.filter(
         Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
@@ -113,7 +115,7 @@ def stream(request):
     star_range = [0, 1, 2, 3, 4, 5]
     context = {"posts": posts, "star_range": star_range}
 
-    print(f'context={context}')
+    # print(f'context={context}')
 
     return render(request, "review/stream.html", context=context)
 
@@ -185,7 +187,8 @@ def my_posts(request):
     print(f'posts:request={request}')
 
     if request.method == 'GET':
-        reviews = Review.objects.select_related("ticket").filter(Q(user=request.user))
+        # reviews = Review.objects.select_related("ticket").filter(Q(user=request.user))
+        reviews = Review.objects.filter(Q(user=request.user))
         # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
         tickets = Ticket.objects.filter(Q(user=request.user)).exclude(id__in=reviews.values("ticket_id"))
@@ -198,4 +201,79 @@ def my_posts(request):
 
         return render(request, "review/my_posts.html", context=context)
 
+
+@login_required
+def update_ticket(request, ticket_id):
+    print(f'update_ticket:request={request}')
+    context = {"ticket_id": ticket_id}
+    return render(request, "review/update_ticket.html", context=context)
+
+
+@login_required
+def delete_ticket(request, ticket_id):
+    print(f'delete_ticket:request={request}')
+    print(f'ticket_id={ticket_id}')
+
+    ticket = Ticket.objects.filter(id=ticket_id)
+
+    print(f'ticket={ticket}')
+    # ticket.delete()
+
     # if request.method == 'POST':
+    #     form = forms.FollowUsersForm(request.POST)
+    #     if form.is_valid():
+    #         print("redirect('my_posts')")
+    #         return redirect('my_posts')
+
+    return redirect('my_posts')
+    # context = {"ticket_id": ticket_id}
+    # return render(request, "review/delete_ticket.html", context=context)
+
+
+@login_required
+def create_review(request):
+    ticket_id = 1
+    print(f'create_review:request={request}')
+    print(f'ticket_id={ticket_id}')
+    ticket_to_review = Ticket.objects.filter(id=ticket_id)
+    print(f'ticket_to_review={ticket_to_review}')
+    form_review = forms.ReviewForm(request.POST)
+
+    print(f'create_review:form_review.is_valid()={form_review.is_valid()}')
+    if form_review.is_valid():
+        rating = form_review.cleaned_data.get("rating")
+        headline = form_review.cleaned_data.get("headline")
+        body = form_review.cleaned_data.get("body")
+        Review.objects.create(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
+    return redirect("stream")
+
+
+@login_required
+def update_review(request, ticket_id, review_id):
+    print(f'update_review:request={request}')
+    context = {"review_id": review_id}
+    form_review = forms.ReviewForm(request.POST)
+    print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
+
+    ticket_to_review = Ticket.objects.filter(id=ticket_id)
+    if form_review.is_valid():
+
+        rating = form_review.cleaned_data.get("rating")
+        headline = form_review.cleaned_data.get("headline")
+        body = form_review.cleaned_data.get("body")
+        Review.objects.update(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
+        return redirect("posts")
+
+        context = {
+            "form_ticket": form_ticket,
+            "form_review": form_review,
+        }
+    return render(request, "review/update_review.html", context=context)
+
+
+@login_required
+def delete_review(request, ticket_id, review_id):
+    print(f'delete_review:request={request}')
+    context = {"review_id": review_id}
+    return redirect('my_posts')
+    # return render(request, "review/update_ticket.html", context=context)

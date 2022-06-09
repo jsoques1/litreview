@@ -3,7 +3,11 @@
 
 <div class="ticket_post">
     <div class="post_header">
-        <p>{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} demandé une critique: {{post.title}}</p>
+        <p>{% if post.user == request.user %}
+            Vous avez {% else%}
+            {{post.user}} a
+            {% endif %}
+            demandé une critique: {{post.title}}</p>
         <p >le {{post.time_created}}</p>
     </div>
 
@@ -15,5 +19,13 @@
         </div>
     {% endif %}
 
+    {% if request.get_full_path == "/stream/" %}
+    <div class="action-button">
+        <form method="POST" action="{% url 'create_review'  %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Créer une critique</button>
+        </form>
+    </div>
+    {% endif %}
  </div>
 {% endblock content %}

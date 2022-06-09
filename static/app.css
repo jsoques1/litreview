@@ -284,14 +284,22 @@ html {
 ** 2nd version =====>
 */
 
-.create_ticket {
+.create_ticket,
+.update_ticket {
+    display: grid;
+    border: solid 1px;
     margin-left: 10%;
     margin-right: 10%;
+    padding: 10px;
 }
 
-.create_review {
+.create_review,
+.update_review {
+    display: grid;
+    border: solid 1px;
     margin-left: 10%;
     margin-right: 10%;
+    padding: 10px;
 }
 
 .ticket_title,
@@ -405,7 +413,8 @@ label:id_rating_5
     padding: 5px;
 }
 
-.review_header {
+.review_header,
+.post_header {
     display: flex;
     justify-content: space-between;
 }
@@ -416,11 +425,6 @@ label:id_rating_5
     border: solid 1px black;
     margin: 5px;
     padding: 5px;
-}
-
-.post_header {
-    display: flex;
-    justify-content: space-between;
 }
 
 .post_title {
@@ -455,5 +459,10 @@ label:id_rating_5
     border: solid 1px black;
     margin: 5px;
     padding: 5px;
+}
 
+.action-button {
+    display: flex;
+    justify-content: right;
+    margin-right: 30px;
 }

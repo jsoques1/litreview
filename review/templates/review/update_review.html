@@ -3,17 +3,13 @@
 
 <br/>
 <div class="ticket_title"></div>
-<h2>Supprimer un ticket </h2>
+<h2>Modifier ma critique </h2>
 <br/>
 <div class="ticket_title"></div>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form}}
-    {% if form.image %}
-        <img src="{{form.image.url}}">
-    {% endif %}
-    
-    <button class="btn" type="submit" value="Delete" >Envoyer</button>
+    {{ form.ticket_id }}
+    <button class="btn" type="submit" value="Update" >Envoyer</button>
 </form>
 </div>
 
