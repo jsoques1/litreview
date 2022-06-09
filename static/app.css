@@ -443,6 +443,14 @@ label:id_rating_5
     padding: 5px;
 }
 
+.ticket_details {
+    display: grid;
+    border: solid 1px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 10px;
+}
+
 .post_title {
   font-size: medium;
   text-align: left;
@@ -477,7 +485,7 @@ label:id_rating_5
     padding: 5px;
 }
 
-.action-button {
+.action_button {
     display: flex;
     justify-content: right;
     margin-right: 30px;

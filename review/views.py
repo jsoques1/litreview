@@ -4,7 +4,7 @@ from django.db.models import Q
 
 
 from django.shortcuts import redirect, render
-
+from django.shortcuts import get_object_or_404
 
 from . import forms
 from review.models import UserFollows, Ticket, Review
@@ -231,21 +231,32 @@ def delete_ticket(request, ticket_id):
 
 
 @login_required
-def create_review(request):
-    ticket_id = 1
+def create_review(request, ticket_id):
     print(f'create_review:request={request}')
     print(f'ticket_id={ticket_id}')
-    ticket_to_review = Ticket.objects.filter(id=ticket_id)
+    # ticket_to_review = Ticket.objects.filter(id=ticket_id)
+    ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
     print(f'ticket_to_review={ticket_to_review}')
-    form_review = forms.ReviewForm(request.POST)
+    # if request.method == 'POST':
+    #     form_review = forms.ReviewForm(request.POST)
+    #
+    #     print(f'create_review:form_review.is_valid()={form_review.is_valid()}')
+    #     if form_review.is_valid():
+    #         rating = form_review.cleaned_data.get("rating")
+    #         headline = form_review.cleaned_data.get("headline")
+    #         body = form_review.cleaned_data.get("body")
+    #         Review.objects.create(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
+    #         return redirect("stream")
 
-    print(f'create_review:form_review.is_valid()={form_review.is_valid()}')
-    if form_review.is_valid():
-        rating = form_review.cleaned_data.get("rating")
-        headline = form_review.cleaned_data.get("headline")
-        body = form_review.cleaned_data.get("body")
-        Review.objects.create(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
-    return redirect("stream")
+    if request.method == 'POST':
+
+        form_review = forms.ReviewForm()
+
+        context = {
+            "ticket_to_review": ticket_to_review,
+            "form_review": form_review,
+        }
+        return render(request, "review/create_review.html", context=context)
 
 
 @login_required
