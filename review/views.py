@@ -207,7 +207,7 @@ def my_posts(request):
 def update_ticket(request, ticket_id):
     print(f'update_ticket:request={request}')
     context = {"ticket_id": ticket_id}
-    form_ticket = forms.TicketForm(request.POST)
+    form_ticket = forms.TicketForm(request.POST, request.FILES)
 
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
 
@@ -239,20 +239,10 @@ def delete_ticket(request, ticket_id):
     print(f'delete_ticket:request={request}')
     print(f'ticket_id={ticket_id}')
 
-    ticket = get_object_or_404(Ticket, id=ticket_id)
+    if request.method == 'POST':
+        Ticket.objects.filter(id=ticket_id).delete()
+        return redirect("my_posts")
 
-    print(f'ticket={ticket}')
-    # ticket.delete()
-
-    # if request.method == 'POST':
-    #     form = forms.FollowUsersForm(request.POST)
-    #     if form.is_valid():
-    #         print("redirect('my_posts')")
-    #         return redirect('my_posts')
-
-    return redirect('my_posts')
-    # context = {"ticket_id": ticket_id}
-    # return render(request, "review/delete_ticket.html", context=context)
 
 
 @login_required
@@ -321,6 +311,9 @@ def update_review(request, ticket_id, review_id):
 @login_required
 def delete_review(request, ticket_id, review_id):
     print(f'delete_review:request={request}')
-    context = {"review_id": review_id}
-    return redirect('my_posts')
-    # return render(request, "review/update_ticket.html", context=context)
+    print(f'ticket_id={ticket_id}')
+    print(f'review_id={review_id}')
+
+    if request.method == 'POST':
+        Review.objects.filter(id=review_id).delete()
+        return redirect("my_posts")

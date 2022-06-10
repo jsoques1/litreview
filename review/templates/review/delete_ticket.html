@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<br/>
-<div class="ticket_title"></div>
+
+<div class="ticket_title">
 <h2>Supprimer un ticket </h2>
-<br/>
-<div class="ticket_title"></div>
+</div>
+
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form}}
+    {{ form.as_p }}
     {% if form.image %}
         <img src="{{form.image.url}}" alt="">
     {% endif %}
     
     <button class="btn" type="submit" value="Delete" >Envoyer</button>
 </form>
-</div>
+
 
 {% endblock content %}
