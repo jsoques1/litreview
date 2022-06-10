@@ -21,7 +21,7 @@
 
     {% if request.get_full_path == "/stream/" %}
     <div class="action_button">
-        <form method="POST" action="{% url 'create_review' post.id %}">
+        <form method="GET" action="{% url 'create_review' post.id %}">
             {% csrf_token %}
             <button class="btn" type="submit">Créer une critique</button>
         </form>

@@ -12,7 +12,7 @@
 
     <div class="rating">
         <h3> {{post.headline}} - </h3>
-        {% for rating_value in star_range %}
+        {% for rating_value in stars %}
             {% if rating_value <= post.rating %}
                 <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}"/>
             {% else %}
@@ -25,12 +25,13 @@
 
     <div class="ticket_review_post">
         <div class="review_header">
-            <p>Ticket - {% if post.user == request.user %}Vous
-                {% else%}{{post.user}}
+            <p>Ticket - {% if post.ticket.user == request.user %}Vous
+                {% else%}{{post.ticket.user}}
                 {% endif %}</p>
-            <p >le {{post.time_created}}</p>
+            <p >le {{post.ticket.time_created}}</p>
         </div>
-        <p>{{post.ticket.description}}<p>
+        <p>{{post.ticket.title}}</p>
+        <p>{{post.ticket.description}}</p>
         {% if post.ticket.image %}
         <div class="image">
             <img  src="{{post.ticket.image.url}} " />
@@ -50,13 +51,14 @@
     </div>
 </div>
 
-{% if post.user == request.user %}
+{% if post.ticket.user == request.user and origin == 'posts' %}
 <div class="ticket_review_post">
     <div class="review_header">
     <p>Vous avez publié un ticket</p>
-        <p >le {{post.time_created}}</p>
+        <p >le {{post.ticket.time_created}}</p>
     </div>
-    <p>{{post.ticket.description}}<p>
+    <p>{{post.ticket.title}}</p>
+    <p>{{post.ticket.description}}</p>
     {% if post.ticket.image %}
     <div class="image">
         <img  src="{{post.ticket.image.url}} " />

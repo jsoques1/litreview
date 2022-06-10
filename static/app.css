@@ -110,6 +110,13 @@ html {
     justify-content: center;
 }
 
+.a_post  {
+    display: grid;
+    border: solid 1px black;
+    margin: 5px;
+    padding: 5px;
+}
+
 .my_posts {
     display: flex;
     justify-content: center;

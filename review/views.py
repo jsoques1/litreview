@@ -112,8 +112,8 @@ def stream(request):
 
     # prepare the mixed posts
     posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-    star_range = [0, 1, 2, 3, 4, 5]
-    context = {"posts": posts, "star_range": star_range}
+    stars = [0, 1, 2, 3, 4, 5]
+    context = {"posts": posts, "stars": stars}
 
     # print(f'context={context}')
 
@@ -195,8 +195,8 @@ def my_posts(request):
         # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
         my_posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-        star_range = [0, 1, 2, 3, 4, 5]
-        context = {"my_posts": my_posts, "star_range": star_range}
+        stars = [0, 1, 2, 3, 4, 5]
+        context = {"my_posts": my_posts, "stars": stars}
         print(f'posts:context={context}')
 
         return render(request, "review/my_posts.html", context=context)
@@ -247,9 +247,23 @@ def create_review(request, ticket_id):
     #         body = form_review.cleaned_data.get("body")
     #         Review.objects.create(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
     #         return redirect("stream")
-
     if request.method == 'POST':
 
+        form_review = forms.ReviewForm(request.POST)
+
+        print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
+
+        if form_review.is_valid():
+            rating = form_review.cleaned_data.get("rating")
+            headline = form_review.cleaned_data.get("headline")
+            body = form_review.cleaned_data.get("body")
+            Review.objects.create(
+                ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body
+            )
+
+            return redirect('stream')
+
+    if request.method == 'GET':
         form_review = forms.ReviewForm()
 
         context = {
