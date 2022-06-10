@@ -206,12 +206,11 @@ def my_posts(request):
 @login_required
 def update_ticket(request, ticket_id):
     print(f'update_ticket:request={request}')
-    context = {"ticket_id": ticket_id}
-    form_ticket = forms.TicketForm(request.POST, request.FILES)
-
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
 
     if request.method == 'POST':
+        form_ticket = forms.TicketForm(request.POST, request.FILES)
+
         print(f'update_ticket:form_ticket.is_valid()={form_ticket.is_valid()}')
 
         if form_ticket.is_valid():
@@ -227,6 +226,7 @@ def update_ticket(request, ticket_id):
             return redirect("my_posts")
 
     if request.method == 'GET':
+        form_ticket = forms.TicketForm()
         context = {
             "ticket_to_review": ticket_to_review,
             "form_ticket": form_ticket,
@@ -252,8 +252,8 @@ def create_review(request, ticket_id):
     # ticket_to_review = Ticket.objects.filter(id=ticket_id)
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
     print(f'ticket_to_review={ticket_to_review}')
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         form_review = forms.ReviewForm(request.POST)
 
         print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
@@ -282,12 +282,14 @@ def create_review(request, ticket_id):
 def update_review(request, ticket_id, review_id):
     print(f'update_review:request={request}')
     context = {"review_id": review_id}
-    form_review = forms.ReviewForm(request.POST)
+
 
     ticket_of_review = get_object_or_404(Ticket, id=ticket_id)
     review_to_update = get_object_or_404(Review, id=review_id)
 
     if request.method == 'POST':
+        form_review = forms.ReviewForm(request.POST)
+
         print(f'update_review:form_review.is_valid()={form_review.is_valid()}')
 
         if form_review.is_valid():
@@ -301,6 +303,7 @@ def update_review(request, ticket_id, review_id):
             return redirect("my_posts")
 
     if request.method == 'GET':
+        form_review = forms.ReviewForm()
         context = {
             "ticket_of_review": ticket_of_review,
             "form_review": form_review,

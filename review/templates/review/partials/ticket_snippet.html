@@ -2,7 +2,7 @@
 
 <div class="ticket_post">
     <div class="post_header">
-        <p>{% if post.user == request.user %}
+        <p class="p_margin">{% if post.user == request.user %}
             Vous avez {% else%}
             {{post.user}} a
             {% endif %}

@@ -4,7 +4,7 @@
 
 <div class="review_post">
     <div class="review_header">
-        <p>{% if post.user == request.user %} Vous avez
+        <p class="p_margin">{% if post.user == request.user %} Vous avez
             {% else%} {{post.user}} a
             {% endif %} publié une critique {{post.title}}</p>
         <p >le {{post.time_created}}</p>

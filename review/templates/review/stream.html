@@ -23,10 +23,10 @@
 
         {% for a_post in posts %}
             {% if a_post|model_type  == 'Ticket' %}
-                <h3> Ticket : {{ a_post }} </h3>
+                <h3> Ticket : </h3>
                 {% include 'review/partials/ticket_snippet.html' with origin='stream' post=a_post stars=stars %}
             {% elif a_post|model_type == 'Review' %}
-                <h3> Revue :  {{ a_post }} </h3>
+                <h3> Revue :  </h3>
                 {% include 'review/partials/review_snippet.html' with origin='stream' post=a_post stars=stars %}
             {% else %}
                 <h3> a_post|model_type inattendu </h3>

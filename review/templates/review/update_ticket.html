@@ -6,11 +6,13 @@
 <h2>Modifier un ticket </h2>
 </div>
 
-<div class="ticket_title"></div>
+<div class="update_ticket">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form_ticket.as_p }}
-        <button class="btn" type="submit" value="Update" >Envoyer</button>
+        <div class="action_button">
+            <button class="btn" type="submit" value="Update" >Envoyer</button>
+        </div>
     </form>
 </div>
 

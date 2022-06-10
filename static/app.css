@@ -105,9 +105,14 @@ html {
 }
 
 
-.stream_data {
+.stream_data,
+.my_posts {
     display: flex;
     justify-content: center;
+}
+
+.p_margin {
+    margin-right: 400px;
 }
 
 .a_post  {
@@ -115,11 +120,6 @@ html {
     border: solid 1px black;
     margin: 5px;
     padding: 5px;
-}
-
-.my_posts {
-    display: flex;
-    justify-content: center;
 }
 
 .grid-container {
