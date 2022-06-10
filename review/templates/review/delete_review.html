@@ -10,7 +10,7 @@
     {% csrf_token %}
     {{ form}}
     {% if form.image %}
-        <img src="{{form.image.url}}">
+        <img src="{{form.image.url}}" alt="">
     {% endif %}
     
     <button class="btn" type="submit" value="Delete" >Envoyer</button>

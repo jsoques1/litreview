@@ -15,17 +15,17 @@
 
     {% if post.image %}
         <div class="div_image">
-            <img class="image" src="{{post.image.url}} " />
+            <img class="image" src="{{post.image.url}}" alt="" />
         </div>
     {% endif %}
 
     {% if request.get_full_path == "/stream/" %}
-    <div class="action_button">
-        <form method="GET" action="{% url 'create_review' post.id %}">
-            {% csrf_token %}
-            <button class="btn" type="submit">Créer une critique</button>
-        </form>
-    </div>
+        <div class="action_button">
+            <form method="GET" action="{% url 'create_review' post.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Créer une critique</button>
+            </form>
+        </div>
     {% endif %}
  </div>
 {% endblock content %}

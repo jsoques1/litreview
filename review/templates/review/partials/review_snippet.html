@@ -14,9 +14,9 @@
         <h3> {{post.headline}} - </h3>
         {% for rating_value in stars %}
             {% if rating_value <= post.rating %}
-                <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}"/>
+                <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}" alt=""/>
             {% else %}
-                <img class="star" src="{% static '/img/icons8-star-empty-50.png' %}"/>
+                <img class="star" src="{% static '/img/icons8-star-empty-50.png' %}" alt=""/>
             {% endif %}
         {% endfor %}
     </div>
@@ -33,12 +33,11 @@
         <p>{{post.ticket.title}}</p>
         <p>{{post.ticket.description}}</p>
         {% if post.ticket.image %}
-        <div class="image">
-            <img  src="{{post.ticket.image.url}} " />
-        </div>
+            <div class="image">
+                <img  src="{{post.ticket.image.url}}" alt="" />
+            </div>
+        {% endif %}
     </div>
-    {% endif %}
-
     <div class="action_button">
         <form method="POST" action="{% url 'update_review' ticket_id=post.ticket.id review_id=post.id %}">
             {% csrf_token %}
@@ -51,6 +50,7 @@
     </div>
 </div>
 
+
 {% if post.ticket.user == request.user and origin == 'posts' %}
 <div class="ticket_review_post">
     <div class="review_header">
@@ -60,9 +60,9 @@
     <p>{{post.ticket.title}}</p>
     <p>{{post.ticket.description}}</p>
     {% if post.ticket.image %}
-    <div class="image">
-        <img  src="{{post.ticket.image.url}} " />
-    </div>
+        <div class="image">
+            <img  src="{{post.ticket.image.url}}" alt=""/>
+        </div>
     {% endif %}
     <div class="action_button">
                 <form method="POST" action="{% url 'update_ticket' ticket_id=post.ticket.id %}">
