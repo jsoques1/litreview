@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 from . import forms
 from review.models import UserFollows, Ticket, Review
-
+from django.utils import timezone
 
 @login_required
 def follow_users(request):
@@ -53,7 +53,7 @@ def follow_users(request):
             "form_following": following_list,
         }
 
-        print(f'context={context}')
+        # print(f'context={context}')
         return render(request, 'review/follow_users.html', context=context)
 
 
@@ -100,7 +100,8 @@ def stream(request):
     # reviews = Review.objects.select_related("ticket").filter(
     #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
     # )
-    #reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user))
+    #reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user"))
+    # | Q(user=request.user))
     reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")))
 
     # ticket w/o reviews
@@ -197,7 +198,7 @@ def my_posts(request):
         my_posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
         stars = [0, 1, 2, 3, 4, 5]
         context = {"my_posts": my_posts, "stars": stars}
-        print(f'posts:context={context}')
+        # print(f'posts:context={context}')
 
         return render(request, "review/my_posts.html", context=context)
 
@@ -206,6 +207,30 @@ def my_posts(request):
 def update_ticket(request, ticket_id):
     print(f'update_ticket:request={request}')
     context = {"ticket_id": ticket_id}
+    form_ticket = forms.TicketForm(request.POST)
+
+    ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
+
+    if request.method == 'POST':
+        print(f'update_ticket:form_ticket.is_valid()={form_ticket.is_valid()}')
+
+        if form_ticket.is_valid():
+            title = form_ticket.cleaned_data.get("title")
+            description = form_ticket.cleaned_data.get("description")
+            image = form_ticket.cleaned_data.get("image")
+            print(f'image={form_ticket.cleaned_data.get("image")}')
+
+            Ticket.objects.filter(id=ticket_id).update(
+                title=title, description=description, user=request.user, image=image,
+                time_created=timezone.now()
+            )
+            return redirect("my_posts")
+
+    if request.method == 'GET':
+        context = {
+            "ticket_to_review": ticket_to_review,
+            "form_ticket": form_ticket,
+        }
     return render(request, "review/update_ticket.html", context=context)
 
 
@@ -280,7 +305,8 @@ def update_review(request, ticket_id, review_id):
             headline = form_review.cleaned_data.get("headline")
             body = form_review.cleaned_data.get("body")
             Review.objects.filter(id=review_id).update(
-                ticket=ticket_of_review, rating=rating, user=request.user, headline=headline, body=body
+                ticket=ticket_of_review, rating=rating, user=request.user, headline=headline, body=body,
+                time_created=timezone.now()
             )
             return redirect("my_posts")
 

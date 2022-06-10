@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<br/>
-<div class="ticket_title"></div>
+
+<div class="ticket_title">
 <h2>Modifier un ticket </h2>
-<br/>
+</div>
+
 <div class="ticket_title"></div>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.ticket_id }}
-    <button class="btn" type="submit" value="Update" >Envoyer</button>
-</form>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form_ticket.as_p }}
+        <button class="btn" type="submit" value="Update" >Envoyer</button>
+    </form>
 </div>
 
 {% endblock content %}
