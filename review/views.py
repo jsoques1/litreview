@@ -96,18 +96,19 @@ def home(request):
 
 @login_required
 def stream(request):
-    # logout(request)
-    # return redirect('login')
-    # return render(request, 'review/stream.html')
 
     # reviews = Review.objects.select_related("ticket").filter(
     #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
     # )
-    reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user))
+    #reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user))
+    reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")))
 
     # ticket w/o reviews
+    # tickets = Ticket.objects.filter(
+    #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+    # ).exclude(id__in=reviews.values("ticket_id"))
     tickets = Ticket.objects.filter(
-        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user"))
     ).exclude(id__in=reviews.values("ticket_id"))
 
     # prepare the mixed posts
@@ -187,7 +188,6 @@ def my_posts(request):
     print(f'posts:request={request}')
 
     if request.method == 'GET':
-        # reviews = Review.objects.select_related("ticket").filter(Q(user=request.user))
         reviews = Review.objects.filter(Q(user=request.user))
         # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
@@ -214,7 +214,7 @@ def delete_ticket(request, ticket_id):
     print(f'delete_ticket:request={request}')
     print(f'ticket_id={ticket_id}')
 
-    ticket = Ticket.objects.filter(id=ticket_id)
+    ticket = get_object_or_404(Ticket, id=ticket_id)
 
     print(f'ticket={ticket}')
     # ticket.delete()
@@ -237,16 +237,6 @@ def create_review(request, ticket_id):
     # ticket_to_review = Ticket.objects.filter(id=ticket_id)
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
     print(f'ticket_to_review={ticket_to_review}')
-    # if request.method == 'POST':
-    #     form_review = forms.ReviewForm(request.POST)
-    #
-    #     print(f'create_review:form_review.is_valid()={form_review.is_valid()}')
-    #     if form_review.is_valid():
-    #         rating = form_review.cleaned_data.get("rating")
-    #         headline = form_review.cleaned_data.get("headline")
-    #         body = form_review.cleaned_data.get("body")
-    #         Review.objects.create(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
-    #         return redirect("stream")
     if request.method == 'POST':
 
         form_review = forms.ReviewForm(request.POST)
@@ -278,19 +268,25 @@ def update_review(request, ticket_id, review_id):
     print(f'update_review:request={request}')
     context = {"review_id": review_id}
     form_review = forms.ReviewForm(request.POST)
-    print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
 
-    ticket_to_review = Ticket.objects.filter(id=ticket_id)
-    if form_review.is_valid():
+    ticket_of_review = get_object_or_404(Ticket, id=ticket_id)
+    review_to_update = get_object_or_404(Review, id=review_id)
 
-        rating = form_review.cleaned_data.get("rating")
-        headline = form_review.cleaned_data.get("headline")
-        body = form_review.cleaned_data.get("body")
-        Review.objects.update(ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body)
-        return redirect("posts")
+    if request.method == 'POST':
+        print(f'update_review:form_review.is_valid()={form_review.is_valid()}')
 
+        if form_review.is_valid():
+            rating = form_review.cleaned_data.get("rating")
+            headline = form_review.cleaned_data.get("headline")
+            body = form_review.cleaned_data.get("body")
+            Review.objects.filter(id=review_id).update(
+                ticket=ticket_of_review, rating=rating, user=request.user, headline=headline, body=body
+            )
+            return redirect("my_posts")
+
+    if request.method == 'GET':
         context = {
-            "form_ticket": form_ticket,
+            "ticket_of_review": ticket_of_review,
             "form_review": form_review,
         }
     return render(request, "review/update_review.html", context=context)

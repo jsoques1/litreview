@@ -1,6 +1,5 @@
 {% block content %}
 
-
 <div class="ticket_post">
     <div class="post_header">
         <p>{% if post.user == request.user %}
@@ -19,13 +18,25 @@
         </div>
     {% endif %}
 
-    {% if request.get_full_path == "/stream/" %}
+    {% if origin == 'stream' %}
         <div class="action_button">
             <form method="GET" action="{% url 'create_review' post.id %}">
                 {% csrf_token %}
                 <button class="btn" type="submit">Créer une critique</button>
             </form>
         </div>
+    {% elif post.user == request.user %}
+        <div class="action_button">
+            <form method="GET" action="{% url 'update_ticket' ticket_id=post.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Modifier</button>
+            </form>
+            <form method="GET" action="{% url 'delete_ticket' ticket_id=post.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Supprimer</button>
+            </form>
+        </div>
     {% endif %}
  </div>
+
 {% endblock content %}

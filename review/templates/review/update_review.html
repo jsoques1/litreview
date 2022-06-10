@@ -1,16 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<br/>
-<div class="ticket_title"></div>
-<h2>Modifier ma critique </h2>
-<br/>
-<div class="ticket_title"></div>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.ticket_id }}
-    <button class="btn" type="submit" value="Update" >Envoyer</button>
-</form>
+
+<div class="review_title">
+    <h2>Modifier ma critique</h2>
 </div>
+<div class="ticket_details">
+    <p>Vous êtes en train de poster en réponse à</p>
+    <div class="review_header">
+        <p>{{ticket_of_review.user}} a demandé une critique</p>
+        <p>le {{ticket_of_review.time_created}}</p>
+    </div>
+    <p>{{ticket_of_review.title}}</p>
+    <p>{{ticket_of_review.description}}</p>
+    {% if ticket_of_review.image %}
+        <div class="image">
+            <img  src="{{ticket_of_review.image.url}}" alt="">
+        </div>
+    {% endif %}
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <div class="update_review">
+        <p>Critique</p>
+        {% csrf_token %}
+        {{ form_review.as_p }}
+        <div class="action_button">
+            <button class="btn" type="submit" >Envoyer</button>
+        </div>
+    </div>
+
+</form>
 
 {% endblock content %}

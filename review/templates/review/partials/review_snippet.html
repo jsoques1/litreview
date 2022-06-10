@@ -14,9 +14,9 @@
         <h3> {{post.headline}} - </h3>
         {% for rating_value in stars %}
             {% if rating_value <= post.rating %}
-                <img class="star" src="{% static '/img/icons8-star-filled-50.png' %}" alt=""/>
+                <img alt="" class="star" src="{% static '/img/icons8-star-filled-50.png' %}"/>
             {% else %}
-                <img class="star" src="{% static '/img/icons8-star-empty-50.png' %}" alt=""/>
+                <img alt="" class="star" src="{% static '/img/icons8-star-empty-50.png' %}"/>
             {% endif %}
         {% endfor %}
     </div>
@@ -38,16 +38,16 @@
             </div>
         {% endif %}
     </div>
-    <div class="action_button">
-        <form method="POST" action="{% url 'update_review' ticket_id=post.ticket.id review_id=post.id %}">
-            {% csrf_token %}
-            <button class="btn" type="submit">Modifier</button>
-        </form>
-        <form method="POST" action="{% url 'delete_review' ticket_id=post.ticket.id review_id=post.id %}">
-            {% csrf_token %}
-            <button class="btn" type="submit">Supprimer</button>
-        </form>
-    </div>
+    {% if post.user == request.user and origin == 'posts' %}
+        <div class="action_button">
+            <form method="GET" action="{% url 'update_review' ticket_id=post.ticket.id review_id=post.id %}">
+                <button class="btn" type="submit">Modifier</button>
+            </form>
+            <form method="GET" action="{% url 'delete_review' ticket_id=post.ticket.id review_id=post.id %}">
+                <button class="btn" type="submit">Supprimer</button>
+            </form>
+        </div>
+    {% endif %}
 </div>
 
 
@@ -65,17 +65,14 @@
         </div>
     {% endif %}
     <div class="action_button">
-                <form method="POST" action="{% url 'update_ticket' ticket_id=post.ticket.id %}">
-            {% csrf_token %}
+        <form method="GET" action="{% url 'update_ticket' ticket_id=post.ticket.id %}">
             <button class="btn" type="submit">Modifier</button>
         </form>
-        <form method="POST" action="{% url 'delete_ticket' ticket_id=post.ticket.id %}">
-            {% csrf_token %}
+        <form method="GET" action="{% url 'delete_ticket' ticket_id=post.ticket.id %}">
             <button class="btn" type="submit">Supprimer</button>
         </form>
     </div>
 </div>
-
 {% endif %}
 
 {% endblock content %}
