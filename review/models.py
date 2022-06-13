@@ -1,14 +1,12 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
-from PIL import Image
-
-
+# from PIL import Image
 
 
 class Ticket(models.Model):
-    class Meta:
-        ordering = ["-time_created"]
+    # class Meta:
+    #     ordering = ["-time_created"]
 
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048, blank=True)
@@ -16,19 +14,8 @@ class Ticket(models.Model):
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
 
-    IMAGE_MAX_SIZE = (500, 500)
-
-    def resize_image(self):
-        image = Image.open(self.image)
-        image.thumbnail(self.IMAGE_MAX_SIZE)
-        image.save(self.image.path)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.resize_image()
-
     def __str__(self):
-        return f'self.user=[{self.user}]  self.title=[{self.title}]'
+        return f'self.user=[{self.user}]  self.title=[{self.title}] self.image=[{self.image}]'
 
 
 class Review(models.Model):
@@ -64,4 +51,3 @@ class UserFollows(models.Model):
 
     def __str__(self):
         return f'self.user=[{self.user}] self.followed_user=[{self.followed_user}]'
-

@@ -1,13 +1,11 @@
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
-
 from django.shortcuts import redirect, render
-
-
+from django.shortcuts import get_object_or_404
 from . import forms
 from review.models import UserFollows, Ticket, Review
+from django.utils import timezone
 
 
 @login_required
@@ -16,10 +14,6 @@ def follow_users(request):
     # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
 
-    following_list1 = UserFollows.objects.filter(user=request.user).order_by('-user')
-    print(f'following_list1={following_list1}')
-    following_list2 = UserFollows.objects.filter(user=request.user).order_by('user')
-    print(f'following_list2={following_list2}')
     following_list = UserFollows.objects.filter(user=request.user).order_by('-id')
     follower_list = UserFollows.objects.filter(followed_user=request.user).order_by('-id')
 
@@ -53,7 +47,6 @@ def follow_users(request):
             "form_following": following_list,
         }
 
-        print(f'context={context}')
         return render(request, 'review/follow_users.html', context=context)
 
 
@@ -89,31 +82,22 @@ def unfollow_user(request, user_follows_id):
 
 @login_required
 def home(request):
-    # logout(request)
-    # return redirect('login')
     return render(request, 'review/home.html')
 
 
 @login_required
 def stream(request):
-    # logout(request)
-    # return redirect('login')
-    # return render(request, 'review/stream.html')
 
-    reviews = Review.objects.select_related("ticket").filter(
-        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
-    )
-    # ticket w/o reviews
+    reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")))
+
     tickets = Ticket.objects.filter(
-        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
+        Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user"))
     ).exclude(id__in=reviews.values("ticket_id"))
 
     # prepare the mixed posts
     posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-    star_range = [0, 1, 2, 3, 4, 5]
-    context = {"posts": posts, "star_range": star_range}
-
-    print(f'context={context}')
+    stars = [0, 1, 2, 3, 4, 5]
+    context = {"posts": posts, "stars": stars}
 
     return render(request, "review/stream.html", context=context)
 
@@ -185,17 +169,131 @@ def my_posts(request):
     print(f'posts:request={request}')
 
     if request.method == 'GET':
-        reviews = Review.objects.select_related("ticket").filter(Q(user=request.user))
+        reviews = Review.objects.filter(Q(user=request.user))
         # reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
         tickets = Ticket.objects.filter(Q(user=request.user)).exclude(id__in=reviews.values("ticket_id"))
         # tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
         my_posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-        star_range = [0, 1, 2, 3, 4, 5]
-        context = {"my_posts": my_posts, "star_range": star_range}
-        print(f'posts:context={context}')
+        stars = [0, 1, 2, 3, 4, 5]
+        context = {"my_posts": my_posts, "stars": stars}
+        # print(f'posts:context={context}')
 
         return render(request, "review/my_posts.html", context=context)
 
-    # if request.method == 'POST':
+
+@login_required
+def update_ticket(request, ticket_id):
+    print(f'update_ticket:request={request}')
+    ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
+
+    if request.method == 'POST':
+        form_ticket = forms.TicketForm(request.POST, request.FILES)
+
+        print(f'update_ticket:form_ticket.is_valid()={form_ticket.is_valid()}')
+
+        if form_ticket.is_valid():
+            title = form_ticket.cleaned_data.get("title")
+            description = form_ticket.cleaned_data.get("description")
+            image = form_ticket.cleaned_data.get("image")
+            print(f'image={form_ticket.cleaned_data.get("image")}')
+
+            Ticket.objects.filter(id=ticket_id).update(
+                title=title, description=description, user=request.user, image=image,
+                time_created=timezone.now()
+            )
+            return redirect("my_posts")
+
+    if request.method == 'GET':
+        form_ticket = forms.TicketForm()
+        context = {
+            "ticket_to_review": ticket_to_review,
+            "form_ticket": form_ticket,
+        }
+    return render(request, "review/update_ticket.html", context=context)
+
+
+@login_required
+def delete_ticket(request, ticket_id):
+    print(f'delete_ticket:request={request}')
+    print(f'ticket_id={ticket_id}')
+
+    if request.method == 'POST':
+        Ticket.objects.filter(id=ticket_id).delete()
+        return redirect("my_posts")
+
+
+@login_required
+def create_review(request, ticket_id):
+    print(f'create_review:request={request}')
+    print(f'ticket_id={ticket_id}')
+    # ticket_to_review = Ticket.objects.filter(id=ticket_id)
+    ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
+    print(f'ticket_to_review={ticket_to_review}')
+
+    if request.method == 'POST':
+        form_review = forms.ReviewForm(request.POST)
+
+        print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
+
+        if form_review.is_valid():
+            rating = form_review.cleaned_data.get("rating")
+            headline = form_review.cleaned_data.get("headline")
+            body = form_review.cleaned_data.get("body")
+            Review.objects.create(
+                ticket=ticket_to_review, rating=rating, user=request.user, headline=headline, body=body
+            )
+
+            return redirect('stream')
+
+    if request.method == 'GET':
+        form_review = forms.ReviewForm()
+
+        context = {
+            "ticket_to_review": ticket_to_review,
+            "form_review": form_review,
+        }
+        return render(request, "review/create_review.html", context=context)
+
+
+@login_required
+def update_review(request, ticket_id, review_id):
+    print(f'update_review:request={request}')
+    context = {"review_id": review_id}
+
+    ticket_of_review = get_object_or_404(Ticket, id=ticket_id)
+
+    if request.method == 'POST':
+        form_review = forms.ReviewForm(request.POST)
+
+        print(f'update_review:form_review.is_valid()={form_review.is_valid()}')
+
+        if form_review.is_valid():
+            rating = form_review.cleaned_data.get("rating")
+            headline = form_review.cleaned_data.get("headline")
+            body = form_review.cleaned_data.get("body")
+            Review.objects.filter(id=review_id).update(
+                ticket=ticket_of_review, rating=rating, user=request.user, headline=headline, body=body,
+                time_created=timezone.now()
+            )
+            return redirect("my_posts")
+
+    if request.method == 'GET':
+        form_review = forms.ReviewForm()
+        context = {
+            "ticket_of_review": ticket_of_review,
+            "form_review": form_review,
+        }
+    return render(request, "review/update_review.html", context=context)
+
+
+@login_required
+def delete_review(request, ticket_id, review_id):
+    print(f'delete_review:request={request}')
+    print(f'ticket_id={ticket_id}')
+    print(f'review_id={review_id}')
+
+    if request.method == 'POST':
+        Review.objects.filter(id=review_id).delete()
+        return redirect("my_posts")

@@ -1,16 +1,8 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
-from django.views.generic import View
 from django.conf import settings
 
 from . import forms
-
-
-# @login_required
-# def home(request):
-#     photos = models.Photo.objects.all()
-#     return render(request, 'blog/home.html', context={'photos': photos})
 
 
 def logout_user(request):
@@ -28,4 +20,3 @@ def signup_page(request):
             login(request, user)
             return redirect(settings.LOGIN_REDIRECT_URL)
     return render(request, 'authentication/signup.html', context={'form': form})
-

@@ -38,7 +38,7 @@
 <div class="list_followed_user">
     {% for user_follows in form_following %}
     <div class="followed_user">
-        <p class="subscriber">{{user_follows.followed_user}}</p>
+        <div class="subscribed">{{user_follows.followed_user}}</div>
         <form method="POST" action="{% url 'unfollow_user' user_follows_id=user_follows.id  %}">
             {% csrf_token %}
             <button type="submit" class="btn" value="subscribe">se désabonner</button>
@@ -54,9 +54,7 @@
 <div class="list_following_user">
     <div class="following-list">
         {% for users in form_follower %}
-            <p class="subscriber">
-                {{users.user}}
-            </p>
+            <div class="subscriber">{{users.user}}</div>
         {% endfor %}
     </div>
 </div>

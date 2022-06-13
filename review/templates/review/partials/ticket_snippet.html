@@ -1,19 +1,43 @@
 {% block content %}
 
-
 <div class="ticket_post">
     <div class="post_header">
-        <p>{% if post.user == request.user %} Vous avez {% else%} {{post.user}} a {% endif %} demandé une critique: {{post.title}}</p>
+        <p>{% if post.user == request.user %}
+            Vous avez {% else%}
+            {{post.user}} a
+            {% endif %}
+            demandé une critique</p>
         <p >le {{post.time_created}}</p>
     </div>
 
-    {{post.description}}
+    <p>{{post.title}}</p>
+
+    <p>{{post.description}}</p>
 
     {% if post.image %}
         <div class="div_image">
-            <img class="image" src="{{post.image.url}} " />
+            <img class="image" src="{{post.image.url}}" alt="" />
         </div>
     {% endif %}
 
+    {% if origin == 'stream' %}
+        <div class="action_button">
+            <form method="GET" action="{% url 'create_review' post.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Créer une critique</button>
+            </form>
+        </div>
+    {% elif post.user == request.user %}
+        <div class="action_button">
+            <form method="GET" action="{% url 'update_ticket' ticket_id=post.id %}">
+                <button class="btn" type="submit">Modifier</button>
+            </form>
+            <form method="POST" action="{% url 'delete_ticket' ticket_id=post.id %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Supprimer</button>
+            </form>
+        </div>
+    {% endif %}
  </div>
+
 {% endblock content %}
