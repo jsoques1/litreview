@@ -1,0 +1,13 @@
+[flake8]
+exclude=
+    authentication/migrations
+    media
+    review/migrations
+    static/img
+    venv
+    .idea
+    test
+    not_existing_dir
+max-line-length=120
+format=html
+htmldir=flake-report

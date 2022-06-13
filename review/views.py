@@ -1,14 +1,12 @@
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
-
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
-
 from . import forms
 from review.models import UserFollows, Ticket, Review
 from django.utils import timezone
+
 
 @login_required
 def follow_users(request):
@@ -16,10 +14,6 @@ def follow_users(request):
     # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
 
-    # following_list1 = UserFollows.objects.filter(user=request.user).order_by('-user')
-    # print(f'following_list1={following_list1}')
-    # following_list2 = UserFollows.objects.filter(user=request.user).order_by('user')
-    # print(f'following_list2={following_list2}')
     following_list = UserFollows.objects.filter(user=request.user).order_by('-id')
     follower_list = UserFollows.objects.filter(followed_user=request.user).order_by('-id')
 
@@ -53,7 +47,6 @@ def follow_users(request):
             "form_following": following_list,
         }
 
-        # print(f'context={context}')
         return render(request, 'review/follow_users.html', context=context)
 
 
@@ -89,25 +82,14 @@ def unfollow_user(request, user_follows_id):
 
 @login_required
 def home(request):
-    # logout(request)
-    # return redirect('login')
     return render(request, 'review/home.html')
 
 
 @login_required
 def stream(request):
 
-    # reviews = Review.objects.select_related("ticket").filter(
-    #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
-    # )
-    #reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user"))
-    # | Q(user=request.user))
     reviews = Review.objects.filter(Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")))
 
-    # ticket w/o reviews
-    # tickets = Ticket.objects.filter(
-    #     Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user")) | Q(user=request.user)
-    # ).exclude(id__in=reviews.values("ticket_id"))
     tickets = Ticket.objects.filter(
         Q(user__in=UserFollows.objects.filter(user=request.user).values("followed_user"))
     ).exclude(id__in=reviews.values("ticket_id"))
@@ -116,8 +98,6 @@ def stream(request):
     posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
     stars = [0, 1, 2, 3, 4, 5]
     context = {"posts": posts, "stars": stars}
-
-    # print(f'context={context}')
 
     return render(request, "review/stream.html", context=context)
 
@@ -244,7 +224,6 @@ def delete_ticket(request, ticket_id):
         return redirect("my_posts")
 
 
-
 @login_required
 def create_review(request, ticket_id):
     print(f'create_review:request={request}')
@@ -283,9 +262,7 @@ def update_review(request, ticket_id, review_id):
     print(f'update_review:request={request}')
     context = {"review_id": review_id}
 
-
     ticket_of_review = get_object_or_404(Ticket, id=ticket_id)
-    review_to_update = get_object_or_404(Review, id=review_id)
 
     if request.method == 'POST':
         form_review = forms.ReviewForm(request.POST)
