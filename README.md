@@ -24,10 +24,10 @@ Pour installer l'application à partir de zéro.
 5. installer les paquets requis
     pip install -r requirements.txt
 
-6. exécuter la migration des modèles 
+6. exécuter la migration des modèles
     python manage.py migrate
 
-7. exécuter le script serveur 
+7. lancer le serveur 
     python manage.py runserver
 
 8. accéder à l'application LitReview servie via le WEB à l'URL :
@@ -41,3 +41,8 @@ toto/t0t0
 titi/t1t1
 tata/t@t@
 ...
+
+9. flake8
+    le résultat se trouve sous litreview/flake. 
+    Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
+    flake8

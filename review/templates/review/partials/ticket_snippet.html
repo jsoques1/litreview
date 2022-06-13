@@ -2,15 +2,17 @@
 
 <div class="ticket_post">
     <div class="post_header">
-        <p class="p_margin">{% if post.user == request.user %}
+        <p>{% if post.user == request.user %}
             Vous avez {% else%}
             {{post.user}} a
             {% endif %}
-            demandé une critique : {{post.title}}</p>
+            demandé une critique</p>
         <p >le {{post.time_created}}</p>
     </div>
 
-    {{post.description}}
+    <p>{{post.title}}</p>
+
+    <p>{{post.description}}</p>
 
     {% if post.image %}
         <div class="div_image">
