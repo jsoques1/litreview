@@ -10,28 +10,17 @@ from django.utils import timezone
 
 @login_required
 def follow_users(request):
-    print(f'follow_users:request={request}')
-    # form = forms.FollowUsersForm(instance=request.user)
     form = forms.FollowUsersForm()
 
     following_list = UserFollows.objects.filter(user=request.user).order_by('-id')
     follower_list = UserFollows.objects.filter(followed_user=request.user).order_by('-id')
 
-    print(f'following_list={following_list}')
-    print(f'follower_list={follower_list}')
-    # form = self.form_class(request_user=self.request.user, former_followed_user=subscription_list)
-
     if request.method == 'POST':
-        # form = forms.FollowUsersForm(request.POST, instance=request.user)
         form = forms.FollowUsersForm(request.POST)
         if form.is_valid():
-            print("form is valid")
-            print(f'cleaned_data={form.cleaned_data}')
-            # print(f"followed_user={form.cleaned_data['followed_user']}")
             followed_users = form.save(commit=False)
             followed_users.user = request.user
             followed_users.followed_user = form.cleaned_data['followed_user']
-            print(followed_users)
             followed_users.save()
 
             return redirect('follow_users')
@@ -39,7 +28,6 @@ def follow_users(request):
         return render(request, 'review/follow_users.html', context={'form': form})
 
     if request.method == 'GET':
-        print("form is GET")
 
         context = {
             "form": form,
@@ -52,19 +40,14 @@ def follow_users(request):
 
 @login_required
 def unfollow_user(request, user_follows_id):
-    print(f'unfollow_user:request={request}')
-    print(f'user_follows_id={user_follows_id}')
     xid = user_follows_id
-    print(f'id={xid} {type(xid)}')
 
     user_follows = UserFollows.objects.filter(id=xid)
-    print(f'id={user_follows} {type(user_follows)}')
     user_follows.delete()
 
     if request.method == 'POST':
         form = forms.FollowUsersForm(request.POST)
         if form.is_valid():
-            print("redirect('follow_users')")
             return redirect('follow_users')
 
     form = forms.FollowUsersForm()
@@ -104,17 +87,12 @@ def stream(request):
 
 @login_required
 def create_ticket(request):
-    print(f'open_ticket:request={request}')
     form = forms.TicketForm()
     if request.method == 'POST':
         form = forms.TicketForm(request.POST, request.FILES)
         if form.is_valid():
-            print("form is valid")
             ticket = form.save(commit=False)
-            # set the uploader to the user before saving the model
             ticket.user = request.user
-            print(ticket)
-            # now we can save
             ticket.save()
             return redirect('stream')
     return render(request, 'review/create_ticket.html', context={'form': form})
@@ -122,14 +100,11 @@ def create_ticket(request):
 
 @login_required
 def create_ticket_review(request):
-    print(f'create_ticket_review:request={request}')
 
     if request.method == 'POST':
 
         form_ticket = forms.TicketForm(request.POST, request.FILES)
         form_review = forms.ReviewForm(request.POST)
-        print(f'create_ticket_review:form_ticket.is_valid()={form_ticket.is_valid()}')
-        print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
 
         if all([form_ticket.is_valid(), form_review.is_valid()]):
             title = form_ticket.cleaned_data.get("title")
@@ -166,7 +141,6 @@ def create_ticket_review(request):
 
 @login_required()
 def my_posts(request):
-    print(f'posts:request={request}')
 
     if request.method == 'GET':
         reviews = Review.objects.filter(Q(user=request.user))
@@ -178,26 +152,21 @@ def my_posts(request):
         my_posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
         stars = [0, 1, 2, 3, 4, 5]
         context = {"my_posts": my_posts, "stars": stars}
-        # print(f'posts:context={context}')
 
         return render(request, "review/my_posts.html", context=context)
 
 
 @login_required
 def update_ticket(request, ticket_id):
-    print(f'update_ticket:request={request}')
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
 
     if request.method == 'POST':
         form_ticket = forms.TicketForm(request.POST, request.FILES)
 
-        print(f'update_ticket:form_ticket.is_valid()={form_ticket.is_valid()}')
-
         if form_ticket.is_valid():
             title = form_ticket.cleaned_data.get("title")
             description = form_ticket.cleaned_data.get("description")
             image = form_ticket.cleaned_data.get("image")
-            print(f'image={form_ticket.cleaned_data.get("image")}')
 
             Ticket.objects.filter(id=ticket_id).update(
                 title=title, description=description, user=request.user, image=image,
@@ -216,8 +185,6 @@ def update_ticket(request, ticket_id):
 
 @login_required
 def delete_ticket(request, ticket_id):
-    print(f'delete_ticket:request={request}')
-    print(f'ticket_id={ticket_id}')
 
     if request.method == 'POST':
         Ticket.objects.filter(id=ticket_id).delete()
@@ -226,16 +193,10 @@ def delete_ticket(request, ticket_id):
 
 @login_required
 def create_review(request, ticket_id):
-    print(f'create_review:request={request}')
-    print(f'ticket_id={ticket_id}')
-    # ticket_to_review = Ticket.objects.filter(id=ticket_id)
     ticket_to_review = get_object_or_404(Ticket, id=ticket_id)
-    print(f'ticket_to_review={ticket_to_review}')
 
     if request.method == 'POST':
         form_review = forms.ReviewForm(request.POST)
-
-        print(f'create_ticket_review:form_review.is_valid()={form_review.is_valid()}')
 
         if form_review.is_valid():
             rating = form_review.cleaned_data.get("rating")
@@ -259,16 +220,12 @@ def create_review(request, ticket_id):
 
 @login_required
 def update_review(request, ticket_id, review_id):
-    print(f'update_review:request={request}')
     context = {"review_id": review_id}
 
     ticket_of_review = get_object_or_404(Ticket, id=ticket_id)
 
     if request.method == 'POST':
         form_review = forms.ReviewForm(request.POST)
-
-        print(f'update_review:form_review.is_valid()={form_review.is_valid()}')
-
         if form_review.is_valid():
             rating = form_review.cleaned_data.get("rating")
             headline = form_review.cleaned_data.get("headline")
@@ -290,9 +247,6 @@ def update_review(request, ticket_id, review_id):
 
 @login_required
 def delete_review(request, ticket_id, review_id):
-    print(f'delete_review:request={request}')
-    print(f'ticket_id={ticket_id}')
-    print(f'review_id={review_id}')
 
     if request.method == 'POST':
         Review.objects.filter(id=review_id).delete()
