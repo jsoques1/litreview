@@ -21,19 +21,19 @@ Se référer aux spécifications données sur la page https://openclassrooms.com
 
     venv\scripts\activate.bat
 
-5. installer les paquets requis
+- installer les paquets requis
 
     pip install -r requirements.txt
 
-6. exécuter la migration des modèles (non nécessaire si le fichier DB db.sqlite3 n'est pas supprimé, voir ci-dessous)
+- exécuter la migration des modèles (non nécessaire si le fichier DB db.sqlite3 n'est pas supprimé, voir ci-dessous)
 
     python manage.py migrate
 
-7. lancer le serveur
+- lancer le serveur
 
     python manage.py runserver
 
-8. accéder à l'application LitReview servie via le WEB à l'URL :
+- accéder à l'application LitReview servie via le WEB à l'URL :
 
     http://127.0.0.1:8000/
 
@@ -54,8 +54,8 @@ tata/t@t@
 
 ## flake8
 
-     le résultat se trouve sous litreview/flake. 
+Le résultat se trouve sous litreview/flake. 
 
-      Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
+Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
 
-      flake8
+flake8
