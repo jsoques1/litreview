@@ -38,7 +38,7 @@ Pour installer l'application à partir de zéro.
     python manage.py runserver
 
 8. accéder à l'application LitReview servie via le WEB à l'URL :
-9. 
+
     http://127.0.0.1:8000/
 
 
@@ -56,9 +56,10 @@ titi/t1t1
 tata/t@t@
 ...
 
-9. flake8
+## flake8
 
      le résultat se trouve sous litreview/flake. 
 
       Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
+
       flake8
