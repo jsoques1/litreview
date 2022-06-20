@@ -1,13 +1,9 @@
-#Project9
-
-Développez une application Web en utilisant Django
+# Project9 : Développez une application Web en utilisant Django
 
 ## Objet.  
 Se référer aux spécifications données sur la page https://openclassrooms.com/fr/paths/518/projects/837/assignment
 
 ## Installation
-
-Pour installer l'application à partir de zéro.
 
 - cloner les sources avec 
 
@@ -29,7 +25,7 @@ Pour installer l'application à partir de zéro.
 
     pip install -r requirements.txt
 
-6. exécuter la migration des modèles (non nécessaire si le fichier DB db.sqlite3 n'est pas supprimé)
+6. exécuter la migration des modèles (non nécessaire si le fichier DB db.sqlite3 n'est pas supprimé, voir ci-dessous)
 
     python manage.py migrate
 
