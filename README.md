@@ -54,8 +54,8 @@ tata/t@t@
 
 ## flake8
 
-     le résultat se trouve sous litreview/flake. 
+Le résultat se trouve sous litreview/flake. 
 
-      Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
+Pour le relancer, aller sous litreview et lancer dans l'environnement virtuel de python :
 
-      flake8
+flake8
