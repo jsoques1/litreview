@@ -427,7 +427,12 @@ label:id_rating_5
     padding-block: 10px;
 }
 
-
+.field_long {
+    font-size: medium;
+    text-align: left;
+    width: 80%;
+    padding-block: 10px;
+}
 
 .review_post {
     display: grid;
@@ -440,6 +445,11 @@ label:id_rating_5
 .post_header {
     display: flex;
     justify-content: space-between;
+}
+
+.review_body {
+    /* font-size: medium; */
+    font-size: 15px Arial;
 }
 
 .ticket_review_post {
