@@ -7,6 +7,11 @@ html {
     font-family: Arial;
 }
 
+
+textarea {
+    width: 80%;
+}
+
 .top_bar {
     height: 50px;
     display: flex;
@@ -390,6 +395,7 @@ input#id_body {
 
  /*  margin-left: 10%; */
   margin-right: 10px;
+
 }
 
 .id_rating_label {
@@ -432,6 +438,7 @@ label:id_rating_5
     text-align: left;
     width: 80%;
     padding-block: 10px;
+    font: 15px Arial;
 }
 
 .review_post {
@@ -449,7 +456,8 @@ label:id_rating_5
 
 .review_body {
     /* font-size: medium; */
-    font-size: 15px Arial;
+    /* font-size: 15px Arial; */
+    font-weight: bold;
 }
 
 .ticket_review_post {
